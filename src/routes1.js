@@ -19,9 +19,6 @@ import Home from "./pages/Home";
 import Articles from "./pages/Articles";
 import Members from "./pages/Members";
 import Account from "./pages/Account";
-import Messages from "./pages/Messages";
-import Badge from '@mui/material/Badge';
-
 
 const routes = [
   {
@@ -29,7 +26,7 @@ const routes = [
     name: "Home",
     key: "home",
     route: "/home",
-    icon: <Icon fontSize='small'>home</Icon>,
+    icon: <Icon>home</Icon>,
     component: <Home />,
     noCollapse: true,
   },
@@ -49,27 +46,6 @@ const routes = [
     route: "/members",
     icon: <Icon>groups</Icon>,
     component: <Members />,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Account",
-    key: "account",
-    route: "/account",
-    icon: <Icon>account_circle</Icon>,
-    component: <Account />,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Messages",
-    key: "messages",
-    route: "/messages",
-    icon: 
-    <Badge badgeContent={4} color="primary">
-    <Icon>mails</Icon>
-  </Badge>,
-    component: <Messages />,
     noCollapse: true,
   },
 ];

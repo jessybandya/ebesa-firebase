@@ -1,52 +1,34 @@
-/**
-=========================================================
-* EBESA React - v4.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect, useMemo } from "react";
 
-// react-router components
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
-// @mui material components
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Icon from "@mui/material/Icon";
 
-// EBESA React components
 import SoftBox from "./components/SoftBox";
 
-// EBESA React examples
 import Sidenav from "./examples/Sidenav";
 import Configurator from "./examples/Configurator";
 
-// EBESA React themes
 import theme from "./assets/theme";
 import themeRTL from "./assets/theme/theme-rtl";
 
-// RTL plugins
 import rtlPlugin from "stylis-plugin-rtl";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 
-// EBESA React routes
-import routes from "./routes";
+import routesAuth from "./routes";
+import routesNoAuth from "./routes1";
+import { useSelector, useDispatch } from 'react-redux'
+
 
 // EBESA React contexts
 import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "./context";
 
 // Images
 import brand from "./assets/images/logo-ct.png";
+import { auth } from "./firebase";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -54,6 +36,7 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
+  const authId = useSelector((state) => state.authId);
 
   // Cache for the rtl
   useMemo(() => {
@@ -132,17 +115,18 @@ export default function App() {
     </SoftBox>
   );
 
-  return direction === "rtl" ? (
-    <CacheProvider value={rtlCache}>
-      <ThemeProvider theme={themeRTL}>
-        <CssBaseline />
+  return  (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      {authId ?(
+        <>
         {layout === "dashboard" && (
           <>
             <Sidenav
               color={sidenavColor}
               brand={brand}
               brandName="EBESA"
-              routes={routes}
+              routes={routesAuth}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
             />
@@ -150,35 +134,33 @@ export default function App() {
             {configsButton}
           </>
         )}
-        {layout === "vr" && <Configurator />}
         <Routes>
-          {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/dashboard" />} />
+          {getRoutes(routesAuth)}
+          <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
-      </ThemeProvider>
-    </CacheProvider>
-  ) : (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {layout === "dashboard" && (
+        </>
+      ):(
         <>
-          <Sidenav
-            color={sidenavColor}
-            brand={brand}
-            brandName="EBESA"
-            routes={routes}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
-          />
-          <Configurator />
-          {configsButton}
+        {layout === "dashboard" && (
+          <>
+            <Sidenav
+              color={sidenavColor}
+              brand={brand}
+              brandName="EBESA"
+              routes={routesNoAuth}
+              onMouseEnter={handleOnMouseEnter}
+              onMouseLeave={handleOnMouseLeave}
+            />
+            <Configurator />
+            {configsButton}
+          </>
+        )}
+        <Routes>
+          {getRoutes(routesNoAuth)}
+          <Route path="*" element={<Navigate to="/home" />} />
+        </Routes>
         </>
       )}
-      {layout === "vr" && <Configurator />}
-      <Routes>
-        {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
-      </Routes>
     </ThemeProvider>
   );
 }

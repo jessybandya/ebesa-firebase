@@ -1,19 +1,3 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
 // @mui material components
@@ -26,6 +10,12 @@ import SoftTypography from "../../components/SoftTypography";
 
 // Soft UI Dashboard React base styles
 import typography from "../../assets/theme/base/typography";
+
+
+import TwitterIcon from '@mui/icons-material/Twitter';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 function Footer({ company, links }) {
   const { href, name } = company;
@@ -62,17 +52,17 @@ function Footer({ company, links }) {
       >
         &copy; {new Date().getFullYear()}, made with
         <SoftBox fontSize={size.md} color="text" mb={-0.5} mx={0.25}>
-          <Icon color="inherit" fontSize="inherit">
+          <Icon color="inherit" style={{color:'#0d6efd'}} fontSize="inherit">
             favorite
           </Icon>
         </SoftBox>
         by
         <Link href={href} target="_blank">
           <SoftTypography variant="button" fontWeight="medium">
-            &nbsp;{name}&nbsp;
+          &nbsp;{name}&nbsp;
           </SoftTypography>
         </Link>
-        for a better web.
+        for a better future.
       </SoftBox>
       <SoftBox
         component="ul"
@@ -91,7 +81,26 @@ function Footer({ company, links }) {
           },
         })}
       >
-        {renderLinks()}
+      <SoftBox>
+      <Link href="https://twitter.com/jessybandya" target="__blank">
+      <TwitterIcon color="inherit" fontSize="inherit"/>
+      </Link>
+    </SoftBox>
+    <SoftBox fontSize={size.md} color="text" mb={-0.5} mx={1.0}>
+    <Link href="https://www.instagram.com/jessybandya/" target="__blank">
+    <InstagramIcon color="inherit" fontSize="inherit"/>
+    </Link>
+  </SoftBox>
+  <SoftBox fontSize={size.md} color="text" mb={-0.5} mx={1.0}>
+  <Link href="https://www.linkedin.com/in/jessy-bandya-7934a01b4/" target="__blank">
+  <LinkedInIcon color="inherit" fontSize="inherit"/>
+  </Link>
+</SoftBox>
+<SoftBox fontSize={size.md} color="text" mb={-0.5} mx={1.0}>
+<Link href="https://github.com/jessybandya" target="__blank">
+<GitHubIcon color="inherit" fontSize="inherit"/>
+ </Link>
+ </SoftBox>
       </SoftBox>
     </SoftBox>
   );
@@ -99,13 +108,7 @@ function Footer({ company, links }) {
 
 // Setting default values for the props of Footer
 Footer.defaultProps = {
-  company: { href: "https://www.creative-tim.com/", name: "Creative Tim" },
-  links: [
-    { href: "https://www.creative-tim.com/", name: "Creative Tim" },
-    { href: "https://www.creative-tim.com/presentation", name: "About Us" },
-    { href: "https://www.creative-tim.com/blog", name: "Blog" },
-    { href: "https://www.creative-tim.com/license", name: "License" },
-  ],
+  company: { href: "https://laughing-darwin-c668f3.netlify.app/", name: "Jessy Bandya" },
 };
 
 // Typechecking props for the Footer

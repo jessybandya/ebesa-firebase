@@ -38,6 +38,7 @@ function DashboardLayout({ children }) {
 
   return (
     <SoftBox
+    style={{zIndex:1}}
       sx={({ breakpoints, transitions, functions: { pxToRem } }) => ({
         p: 3,
         position: "relative",

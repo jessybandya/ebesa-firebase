@@ -1,22 +1,7 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // react-router-dom components
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation, NavLink, Navigate, useNavigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -35,13 +20,17 @@ import SoftButton from "../../components/SoftButton";
 // Soft UI Dashboard React examples
 import SidenavCollapse from "./SidenavCollapse";
 import SidenavCard from "./SidenavCard";
-
+import {Button,Modal} from 'react-bootstrap';
 // Custom styles for the Sidenav
 import SidenavRoot from "./SidenavRoot";
 import sidenavLogoLabel from "./styles/sidenav";
+import { useSelector, useDispatch } from 'react-redux'
 
 // Soft UI Dashboard React context
 import { useSoftUIController, setMiniSidenav } from "../../context";
+import { auth } from "../../firebase";
+import { updateAuthId } from "../../redux/dataSlice";
+import SignIn from "../Navbars/DashboardNavbar/SignIn";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useSoftUIController();
@@ -49,9 +38,17 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const location = useLocation();
   const { pathname } = location;
   const collapseName = pathname.split("/").slice(1)[0];
-
+  const history = useNavigate("")
+  const dispatch1 = useDispatch();
+  const authId = useSelector((state) => state.authId);
+  const [modalShow, setModalShow] = useState(false);
   const closeSidenav = () => setMiniSidenav(dispatch, true);
-
+  const logout = () => {
+    auth.signOut();
+    history("/")
+    dispatch1(updateAuthId(''))
+    window.location.reload();
+}
   useEffect(() => {
     // A function that sets the mini state of the sidenav.
     function handleMiniSidenav() {
@@ -128,8 +125,12 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   });
 
   return (
-    <SidenavRoot {...rest} variant="permanent" ownerState={{ transparentSidenav, miniSidenav }}>
-      <SoftBox pt={3} pb={1} px={4} textAlign="center">
+    <SidenavRoot 
+     style={{zIndex:1}}
+    {...rest} variant="permanent" ownerState={{ transparentSidenav, miniSidenav }}>
+      <SoftBox pt={3} pb={1} px={4} textAlign="center"
+      style={{zIndex:1}}
+      >
         <SoftBox
           display={{ xs: "block", xl: "none" }}
           position="absolute"
@@ -156,10 +157,15 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         </SoftBox>
       </SoftBox>
       <Divider />
-      <List>{renderRoutes}</List>
+      <List     style={{zIndex:1}}
+      >{renderRoutes}</List>
       <SoftBox pt={2} my={2} mx={2} mt="auto">
-        <SoftBox mt={2}>
-          <SoftButton
+        <SoftBox     style={{zIndex:1}}
+        mt={2}>
+        {authId ?(
+          <>
+          {authId === "1k1hIVj1nfeREt33iFOWwxmmexe25"?(
+            <SoftButton
             component="a"
             target="_blank"
             rel="noreferrer"
@@ -167,10 +173,57 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             color={color}
             fullWidth
           >
-            Create Account
+            Admin
           </SoftButton>
+          ):(
+            <>
+            <Link
+            to='/'>
+            <SoftButton
+            component="a"
+            target="_blank"
+            rel="noreferrer"
+            variant="gradient"
+            color={color}
+            fullWidth
+            onClick={logout}
+          >
+            Logout
+          </SoftButton>
+            </Link>
+          </>
+          )}
+          </>
+        ):(
+          <SoftButton
+          component="a"
+          target="_blank"
+          rel="noreferrer"
+          variant="gradient"
+          color={color}
+          fullWidth
+          onClick={() => setModalShow(true)}
+        >
+          Sign In
+        </SoftButton>
+        )}
+
         </SoftBox>
       </SoftBox>
+      <Modal
+      show={modalShow}
+      onHide={() => setModalShow(false)}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Body>
+      <SignIn setModalShow={setModalShow}/>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={() => setModalShow(false)}>Close</Button>
+      </Modal.Footer>
+    </Modal>
     </SidenavRoot>
   );
 }
