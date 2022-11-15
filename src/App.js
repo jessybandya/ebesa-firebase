@@ -29,6 +29,8 @@ import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "./cont
 // Images
 import brand from "./assets/images/logo-ct.png";
 import { auth } from "./firebase";
+import SignUp from "./layouts/authentication/sign-up";
+import Admin from "./pages/Admin";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -135,8 +137,10 @@ export default function App() {
           </>
         )}
         <Routes>
-          {getRoutes(routesAuth)}
+          {getRoutes(routesAuth)} 
           <Route path="*" element={<Navigate to="/home" />} />
+          <Route exact path="/authentication/sign-up" element={<SignUp />} />
+          <Route exact path="/admin" element={<Admin />} />
         </Routes>
         </>
       ):(
@@ -158,6 +162,8 @@ export default function App() {
         <Routes>
           {getRoutes(routesNoAuth)}
           <Route path="*" element={<Navigate to="/home" />} />
+          <Route exact path="/authentication/sign-up" element={<SignUp />} />
+          <Route exact path="/admin" element={<Admin />} />
         </Routes>
         </>
       )}

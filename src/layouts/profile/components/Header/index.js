@@ -70,7 +70,6 @@ function Header() {
 
   return (
     <SoftBox position="relative">
-      <DashboardNavbar absolute light />
       <SoftBox
         display="flex"
         alignItems="center"
@@ -113,10 +112,10 @@ function Header() {
           <Grid item>
             <SoftBox height="100%" mt={0.5} lineHeight={1}>
               <SoftTypography variant="h5" fontWeight="medium">
-                Alex Thompson
+                Jessy Bandya
               </SoftTypography>
               <SoftTypography variant="button" color="text" fontWeight="medium">
-                CEO / Co-Founder
+              Jnr. Software Engineer
               </SoftTypography>
             </SoftBox>
           </Grid>
@@ -128,9 +127,7 @@ function Header() {
                 onChange={handleSetTabValue}
                 sx={{ background: "transparent" }}
               >
-                <Tab label="App" icon={<Cube />} />
-                <Tab label="Message" icon={<Document />} />
-                <Tab label="Settings" icon={<Settings />} />
+                <Tab label="Articles (1.2K)" icon={<Document />} />
               </Tabs>
             </AppBar>
           </Grid>

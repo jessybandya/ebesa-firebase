@@ -31,6 +31,51 @@ import { useSoftUIController, setMiniSidenav } from "../../context";
 import { auth } from "../../firebase";
 import { updateAuthId } from "../../redux/dataSlice";
 import SignIn from "../Navbars/DashboardNavbar/SignIn";
+import SwipeableViews from 'react-swipeable-views';
+import { useTheme } from '@mui/material/styles';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import SignUp from "../Navbars/DashboardNavbar/SignUp";
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+import AppBar from "@mui/material/AppBar";
+
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `full-width-tab-${index}`,
+    'aria-controls': `full-width-tabpanel-${index}`,
+  };
+}
+
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useSoftUIController();
@@ -43,6 +88,16 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const authId = useSelector((state) => state.authId);
   const [modalShow, setModalShow] = useState(false);
   const closeSidenav = () => setMiniSidenav(dispatch, true);
+  const theme = useTheme();
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const handleChangeIndex = (index) => {
+    setValue(index);
+  };
   const logout = () => {
     auth.signOut();
     history("/")
@@ -54,6 +109,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     function handleMiniSidenav() {
       setMiniSidenav(dispatch, window.innerWidth < 1200);
     }
+    
 
     /** 
      The event listener that's calling the handleMiniSidenav function when resizing the window.
@@ -159,15 +215,14 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       <Divider />
       <List     style={{zIndex:1}}
       >{renderRoutes}</List>
-      <SoftBox pt={2} my={2} mx={2} mt="auto">
+      <SoftBox mx={2} mt="auto">
         <SoftBox     style={{zIndex:1}}
-        mt={2}>
+        >
         {authId ?(
           <>
-          {authId === "1k1hIVj1nfeREt33iFOWwxmmexe25"?(
+          {authId === process.env.REACT_APP_ADMIN_AUTHID ?(
             <SoftButton
-            component="a"
-            target="_blank"
+            component={NavLink} to="/admin"
             rel="noreferrer"
             variant="gradient"
             color={color}
@@ -217,12 +272,44 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Body>
+    <Modal.Header>
+         <AppBar position="static">
+           <Tabs
+              value={value}
+              onChange={handleChange}
+              indicatorColor="secondary"
+              textColor="inherit"
+              variant="fullWidth"
+              aria-label="full width tabs example"
+            >
+              <Tab label="Sign In" {...a11yProps(0)} />
+              <Tab label="Sign Up" {...a11yProps(1)} />
+            </Tabs>
+          </AppBar>
+    </Modal.Header>
+    <Modal.Body
+    style={{
+      height: '70vh',
+      overflowY: 'auto'
+     }}
+    >
+    <SwipeableViews
+    axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+    index={value}
+    onChangeIndex={handleChangeIndex}
+  >
+    <TabPanel value={value} index={0} dir={theme.direction}>
       <SignIn setModalShow={setModalShow}/>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={() => setModalShow(false)}>Close</Button>
-      </Modal.Footer>
+    </TabPanel>
+    <TabPanel value={value} index={1} dir={theme.direction}>
+      <SignUp setModalShow={setModalShow}/>
+    </TabPanel>
+  </SwipeableViews>
+
+    </Modal.Body>
+    <Modal.Footer>
+      <Button onClick={() => setModalShow(false)}>Close</Button>
+    </Modal.Footer>
     </Modal>
     </SidenavRoot>
   );

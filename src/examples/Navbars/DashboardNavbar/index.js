@@ -192,7 +192,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   return (
     <>
     <AppBar
-    style={{zIndex:1}}
+    style={{zIndex:10}}
       position={absolute ? "absolute" : navbarType}
       color="inherit"
       sx={(theme) => navbar(theme, { transparentNavbar, absolute, light })}

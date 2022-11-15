@@ -19,6 +19,8 @@ import Home from "./pages/Home";
 import Articles from "./pages/Articles";
 import Members from "./pages/Members";
 import Account from "./pages/Account";
+import Events from "./pages/Events";
+import Gallery from "./pages/Gallery";
 
 const routes = [
   {
@@ -46,6 +48,24 @@ const routes = [
     route: "/members",
     icon: <Icon>groups</Icon>,
     component: <Members />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Gallery",
+    key: "gallery",
+    route: "/gallery",
+    icon: <Icon>collections</Icon>,
+    component: <Gallery />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Events",
+    key: "events",
+    route: "/events",
+    icon: <Icon>event</Icon>,
+    component: <Events />,
     noCollapse: true,
   },
 ];
