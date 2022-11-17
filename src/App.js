@@ -31,6 +31,8 @@ import brand from "./assets/images/logo-ct.png";
 import { auth } from "./firebase";
 import SignUp from "./layouts/authentication/sign-up";
 import Admin from "./pages/Admin";
+import Articles from "./pages/Articles";
+import Article from "./pages/Article";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -141,6 +143,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/home" />} />
           <Route exact path="/authentication/sign-up" element={<SignUp />} />
           <Route exact path="/admin" element={<Admin />} />
+          <Route exact path="/article/:bool/:articleID/:ownerID" element={<Article />} />
         </Routes>
         </>
       ):(
@@ -164,6 +167,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/home" />} />
           <Route exact path="/authentication/sign-up" element={<SignUp />} />
           <Route exact path="/admin" element={<Admin />} />
+          <Route exact path="/article/:bool/:articleID/:ownerID" element={<Article />} />
         </Routes>
         </>
       )}
