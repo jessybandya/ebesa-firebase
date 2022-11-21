@@ -1,22 +1,7 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // react-router-dom components
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation, NavLink, Navigate, useNavigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -35,13 +20,62 @@ import SoftButton from "../../components/SoftButton";
 // Soft UI Dashboard React examples
 import SidenavCollapse from "./SidenavCollapse";
 import SidenavCard from "./SidenavCard";
-
+import {Button,Modal} from 'react-bootstrap';
 // Custom styles for the Sidenav
 import SidenavRoot from "./SidenavRoot";
 import sidenavLogoLabel from "./styles/sidenav";
+import { useSelector, useDispatch } from 'react-redux'
 
 // Soft UI Dashboard React context
 import { useSoftUIController, setMiniSidenav } from "../../context";
+import { auth } from "../../firebase";
+import { updateAuthId } from "../../redux/dataSlice";
+import SignIn from "../Navbars/DashboardNavbar/SignIn";
+import SwipeableViews from 'react-swipeable-views';
+import { useTheme } from '@mui/material/styles';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import SignUp from "../Navbars/DashboardNavbar/SignUp";
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+import AppBar from "@mui/material/AppBar";
+
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `full-width-tab-${index}`,
+    'aria-controls': `full-width-tabpanel-${index}`,
+  };
+}
+
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useSoftUIController();
@@ -49,14 +83,33 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const location = useLocation();
   const { pathname } = location;
   const collapseName = pathname.split("/").slice(1)[0];
-
+  const history = useNavigate("")
+  const dispatch1 = useDispatch();
+  const authId = useSelector((state) => state.authId);
+  const [modalShow, setModalShow] = useState(false);
   const closeSidenav = () => setMiniSidenav(dispatch, true);
+  const theme = useTheme();
+  const [value, setValue] = useState(0);
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const handleChangeIndex = (index) => {
+    setValue(index);
+  };
+  const logout = () => {
+    auth.signOut();
+    history("/")
+    dispatch1(updateAuthId(''))
+    window.location.reload();
+}
   useEffect(() => {
     // A function that sets the mini state of the sidenav.
     function handleMiniSidenav() {
       setMiniSidenav(dispatch, window.innerWidth < 1200);
     }
+    
 
     /** 
      The event listener that's calling the handleMiniSidenav function when resizing the window.
@@ -128,8 +181,11 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   });
 
   return (
-    <SidenavRoot {...rest} variant="permanent" ownerState={{ transparentSidenav, miniSidenav }}>
-      <SoftBox pt={3} pb={1} px={4} textAlign="center">
+    <SidenavRoot 
+     style={{zIndex:1}}
+    {...rest} variant="permanent" ownerState={{ transparentSidenav, miniSidenav }}>
+      <SoftBox pt={3} pb={1} px={4} textAlign="center"
+      >
         <SoftBox
           display={{ xs: "block", xl: "none" }}
           position="absolute"
@@ -156,23 +212,104 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         </SoftBox>
       </SoftBox>
       <Divider />
-      <List>{renderRoutes}</List>
-      <SoftBox pt={2} my={2} mx={2} mt="auto">
-        <SidenavCard />
-        <SoftBox mt={2}>
-          <SoftButton
-            component="a"
-            href="https://creative-tim.com/product/soft-ui-dashboard-pro-react"
-            target="_blank"
+      <List     style={{zIndex:1}}
+      >{renderRoutes}</List>
+      <SoftBox mx={2} mt="auto">
+        <SoftBox     style={{zIndex:1}}
+        >
+        {authId ?(
+          <>
+          {authId === process.env.REACT_APP_ADMIN_AUTHID ?(
+            <SoftButton
+            component={NavLink} to="/admin"
             rel="noreferrer"
             variant="gradient"
             color={color}
             fullWidth
           >
-            upgrade to pro
+            Admin
           </SoftButton>
+          ):(
+            <>
+            <Link
+            to='/'>
+            <SoftButton
+            component="a"
+            target="_blank"
+            rel="noreferrer"
+            variant="gradient"
+            color={color}
+            fullWidth
+            onClick={logout}
+          >
+            Logout
+          </SoftButton>
+            </Link>
+          </>
+          )}
+          </>
+        ):(
+          <SoftButton
+          component="a"
+          target="_blank"
+          rel="noreferrer"
+          variant="gradient"
+          color={color}
+          fullWidth
+          onClick={() => setModalShow(true)}
+        >
+          Sign In
+        </SoftButton>
+        )}
+
         </SoftBox>
       </SoftBox>
+      <Modal
+      show={modalShow}
+      onHide={() => setModalShow(false)}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+    <Modal.Header>
+         <AppBar position="static">
+           <Tabs
+              value={value}
+              onChange={handleChange}
+              indicatorColor="secondary"
+              textColor="inherit"
+              variant="fullWidth"
+              aria-label="full width tabs example"
+            >
+              <Tab label="Sign In" {...a11yProps(0)} />
+              <Tab label="Sign Up" {...a11yProps(1)} />
+            </Tabs>
+          </AppBar>
+    </Modal.Header>
+    <Modal.Body
+    style={{
+      height: '70vh',
+      overflowY: 'auto'
+     }}
+    >
+    <SwipeableViews
+    axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+    index={value}
+    onChangeIndex={handleChangeIndex}
+  >
+    <TabPanel value={value} index={0} dir={theme.direction}>
+      <SignIn setModalShow={setModalShow}/>
+    </TabPanel>
+    <TabPanel value={value} index={1} dir={theme.direction}>
+      <SignUp setModalShow={setModalShow}/>
+    </TabPanel>
+  </SwipeableViews>
+
+    </Modal.Body>
+    <Modal.Footer>
+      <Button onClick={() => setModalShow(false)}>Close</Button>
+    </Modal.Footer>
+    </Modal>
     </SidenavRoot>
   );
 }

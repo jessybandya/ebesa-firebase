@@ -151,11 +151,6 @@ function Configurator() {
         </SoftBox>
 
         <SoftBox mt={3} lineHeight={1}>
-          <SoftTypography variant="h6">Sidenav Type</SoftTypography>
-          <SoftTypography variant="button" color="text" fontWeight="regular">
-            Choose between 2 different sidenav types.
-          </SoftTypography>
-
           <SoftBox
             sx={{
               display: "flex",

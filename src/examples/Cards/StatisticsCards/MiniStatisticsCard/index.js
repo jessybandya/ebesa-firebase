@@ -68,10 +68,7 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                   color={bgColor === "white" ? "dark" : "white"}
                 >
                   {count}{" "}
-                  <SoftTypography variant="button" color={percentage.color} fontWeight="bold">
-                    {percentage.text}
-                  </SoftTypography>
-                </SoftTypography>
+                   </SoftTypography>
               </SoftBox>
             </Grid>
             {direction === "right" ? (

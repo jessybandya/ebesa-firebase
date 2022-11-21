@@ -1,22 +1,7 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -35,11 +20,159 @@ import Separator from "../components/Separator";
 
 // Images
 import curved6 from "../../../assets/images/curved-images/curved14.jpg";
+import { Space, Spin } from 'antd';
+import { toast } from 'react-toastify'
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { auth, db } from "../../../firebase";
+import { updateAuthId } from "../../../redux/dataSlice";
+import { useSelector, useDispatch } from 'react-redux'
+
 
 function SignUp() {
   const [agreement, setAgremment] = useState(true);
-
   const handleSetAgremment = () => setAgremment(!agreement);
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [reg, setReg] = useState('')
+  const [year, setYear] = useState('')
+  const [phone, setPhone] = useState('')
+  const [password, setPassword] = useState('')
+  const [cPassword, setCPassword] = useState('')
+  const [email, setEmail] = useState('')
+  const [loading, setLoading] = useState(false)
+  const history = useNavigate("");
+  const dispatch = useDispatch();
+
+
+  const handleChangeYear = (event) => {
+    setYear(event.target.value);
+  };
+  useEffect(()=>{
+    setEmail(window.localStorage.getItem("emailForRegistration"));
+}, [])
+
+useEffect(() => {
+  const unsubscribe = auth.onAuthStateChanged(async (user) => {
+    if(user){
+      const idTokenResult = await user.getIdTokenResult()
+      dispatch({
+        type: 'LOGGED_IN_USER',
+        payload: {
+          email: user.email,
+          token: idTokenResult.token,
+          
+        }
+      })
+      dispatch(updateAuthId(user?.uid))
+
+    }
+  })
+  return () => unsubscribe()
+}, [])
+
+const completeRegistration = async() => {
+  setLoading(true)
+
+  if(!firstName){
+    toast.error('First Name is required!', {
+      position: toast.POSITION.BOTTOM_CENTER
+  })
+    setLoading(false)
+  }else if(!lastName){
+    toast.error('Last Name is required!', {
+      position: toast.POSITION.BOTTOM_CENTER
+  })
+    setLoading(false)
+  }else if(!reg){
+    toast.error('Registration No. is required!', {
+      position: toast.POSITION.BOTTOM_CENTER
+  })
+    setLoading(false)
+  }else if(!year){
+    toast.error('Year of study is required!', {
+      position: toast.POSITION.BOTTOM_CENTER
+  })
+    setLoading(false)
+  }else if(!phone){
+    toast.error('Phone No. is required!', {
+      position: toast.POSITION.BOTTOM_CENTER
+  })
+    setLoading(false)
+  }else if(!password){
+    toast.error('Password is required!', {
+      position: toast.POSITION.BOTTOM_CENTER
+  })
+    setLoading(false)
+  }else if(!cPassword){
+    toast.error('Confirm Password is required!', {
+      position: toast.POSITION.BOTTOM_CENTER
+  })
+    setLoading(false)
+  }else if(!(reg.includes('F21') || reg.includes('f21'))){
+    toast.error("Sorry!\nYour registration number shows that, you do not belong to Biosystem Engineering!", {
+      position: toast.POSITION.BOTTOM_CENTER
+  })
+    setLoading(false)
+  }else if(password.length <8){
+    toast.error('Password must have atleast 8 characters!', {
+      position: toast.POSITION.BOTTOM_CENTER
+  })
+    setLoading(false)
+  }else if(cPassword !== password){
+    toast.error("Passwords don't match each other!", {
+      position: toast.POSITION.BOTTOM_CENTER
+  })
+    setLoading(false)
+  }else{
+    try{
+      const result = await auth.signInWithEmailLink(
+          email, 
+          window.location.href
+          );
+      
+      if(result.user.emailVerified){
+          //remove user email from localstaorage
+          //get user id token
+          window.localStorage.removeItem("emailForRegistration");
+          
+          let user = auth.currentUser
+          await user.updatePassword(password);
+          const idTokenResult = await user.getIdTokenResult();
+
+          db.collection('users').doc(user.uid).set({
+              uid: user.uid,
+              firstName,
+              lastName,
+              phone,
+              regNo:reg,
+              yos:year,
+              email: user.email,
+              profilePhoto: "https://cdn.pngsumo.com/default-image-png-picture-710222-default-image-png-default-png-265_265.png",
+              status:"active",
+              type:"user",
+              isApproved:true,
+              timestamp: Date.now()
+          })   
+          //redirect
+           setLoading(false)
+           toast.success("Succefully created an EBESA member account!")
+          history('/')
+      }
+      
+      }catch(error){
+        setLoading(false)
+      //
+      toast.error(error.message, {
+        position: toast.POSITION.BOTTOM_CENTER
+    })
+}
+  }
+}
+
 
   return (
     <BasicLayout
@@ -50,63 +183,77 @@ function SignUp() {
       <Card>
         <SoftBox p={3} mb={1} textAlign="center">
           <SoftTypography variant="h5" fontWeight="medium">
-            Register with
+            Complete Registration!
           </SoftTypography>
-        </SoftBox>
-        <SoftBox mb={2}>
-          <Socials />
         </SoftBox>
         <Separator />
         <SoftBox pt={2} pb={3} px={3}>
           <SoftBox component="form" role="form">
-            <SoftBox mb={2}>
-              <SoftInput placeholder="Name" />
+            <SoftBox style={{display:'flex'}} mb={2}>
+              <SoftInput style={{marginRight:3}}
+              value={firstName}
+              onChange={e => setFirstName(e.target.value)}
+              placeholder="First Name" />
+              <SoftInput style={{marginLeft:3}} 
+              value={lastName}
+              onChange={e => setLastName(e.target.value)}
+              placeholder="Last Name" />
             </SoftBox>
             <SoftBox mb={2}>
-              <SoftInput type="email" placeholder="Email" />
+              <SoftInput type="email" value={email} disabled/>
             </SoftBox>
-            <SoftBox mb={2}>
-              <SoftInput type="password" placeholder="Password" />
-            </SoftBox>
-            <SoftBox display="flex" alignItems="center">
-              <Checkbox checked={agreement} onChange={handleSetAgremment} />
-              <SoftTypography
-                variant="button"
-                fontWeight="regular"
-                onClick={handleSetAgremment}
-                sx={{ cursor: "poiner", userSelect: "none" }}
-              >
-                &nbsp;&nbsp;I agree the&nbsp;
-              </SoftTypography>
-              <SoftTypography
-                component="a"
-                href="#"
-                variant="button"
-                fontWeight="bold"
-                textGradient
-              >
-                Terms and Conditions
-              </SoftTypography>
-            </SoftBox>
+            <SoftBox style={{display:'flex'}} mb={2}>
+            <SoftInput style={{marginRight:3}} 
+            value={reg}
+            onChange={e => setReg(e.target.value)}
+            placeholder="Registration No" />
+            <FormControl fullWidth size="small">
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={year}
+              label="YOS"
+              onChange={handleChangeYear}
+              displayEmpty
+            renderValue={year !== "" ? undefined : () => <span style={{color:'#9E9E9E'}}>Year Of Study</span>}
+            >
+              <MenuItem value="1">1</MenuItem>
+              <MenuItem value="2">2</MenuItem>
+              <MenuItem value="3">3</MenuItem>
+              <MenuItem value="4">4</MenuItem>
+              <MenuItem value="5">5</MenuItem>
+            </Select>
+          </FormControl>
+          </SoftBox>
+
+          <SoftBox style={{display:'flex'}} mb={2}>
+          <SoftInput style={{marginRight:3}}
+          value={phone}
+          onChange={e => setPhone(e.target.value)}
+          placeholder="Phone No." />
+        </SoftBox>
+
+        <SoftBox style={{display:'flex'}} mb={2}>
+        <SoftInput style={{marginRight:3}}
+        type="password"
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+        placeholder="Password" />
+        <SoftInput style={{marginLeft:3}}
+        value={cPassword}
+        type="password"
+        onChange={e => setCPassword(e.target.value)}
+        placeholder="Confirm Password" />
+      </SoftBox>
+ 
             <SoftBox mt={4} mb={1}>
-              <SoftButton variant="gradient" color="dark" fullWidth>
-                sign up
+              <SoftButton onClick={completeRegistration} variant="gradient" color="dark" fullWidth>
+              {loading === true ?(
+                <span><span style={{color:'#fff'}}>signing up...<Spin size="middle" /></span></span>
+              ):(
+                <span>Send</span>
+              )}
               </SoftButton>
-            </SoftBox>
-            <SoftBox mt={3} textAlign="center">
-              <SoftTypography variant="button" color="text" fontWeight="regular">
-                Already have an account?&nbsp;
-                <SoftTypography
-                  component={Link}
-                  to="/authentication/sign-in"
-                  variant="button"
-                  color="dark"
-                  fontWeight="bold"
-                  textGradient
-                >
-                  Sign in
-                </SoftTypography>
-              </SoftTypography>
             </SoftBox>
           </SoftBox>
         </SoftBox>
