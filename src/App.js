@@ -33,6 +33,8 @@ import SignUp from "./layouts/authentication/sign-up";
 import Admin from "./pages/Admin";
 import Articles from "./pages/Articles";
 import Article from "./pages/Article";
+import Profile from "./pages/Profile";
+import Album from "./pages/Gallery/Album";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -133,6 +135,7 @@ export default function App() {
               routes={routesAuth}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
+              style={{zIndex:1}}
             />
             <Configurator />
             {configsButton}
@@ -144,6 +147,8 @@ export default function App() {
           <Route exact path="/authentication/sign-up" element={<SignUp />} />
           <Route exact path="/admin" element={<Admin />} />
           <Route exact path="/article/:bool/:articleID/:ownerID" element={<Article />} />
+          <Route exact path="/profile/:bool/:ownerID" element={<Profile />} />
+          <Route exact path="/album/:albumId/:uid" element={<Album />} />
         </Routes>
         </>
       ):(
@@ -157,6 +162,7 @@ export default function App() {
               routes={routesNoAuth}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
+              style={{zIndex:1}}
             />
             <Configurator />
             {configsButton}
@@ -167,7 +173,9 @@ export default function App() {
           <Route path="*" element={<Navigate to="/home" />} />
           <Route exact path="/authentication/sign-up" element={<SignUp />} />
           <Route exact path="/admin" element={<Admin />} />
+          <Route exact path="/profile/:bool/:ownerID" element={<Profile />} />
           <Route exact path="/article/:bool/:articleID/:ownerID" element={<Article />} />
+          <Route exact path="/album/:albumId/:uid" element={<Album />} />
         </Routes>
         </>
       )}

@@ -15,6 +15,7 @@ import {
     SendOutlined
   } from '@ant-design/icons';
   import { toast } from "react-toastify"
+import { useSelector } from 'react-redux'
 
   const { TextArea } = Input;
 
@@ -26,6 +27,7 @@ function Article() {
     const [post, setPost] = React.useState()
     const [submitComment, setSubmitComment] = useState('')
     const [currentUser, setCurrentUser] = React.useState()
+    const authId = useSelector((state) => state.authId);
 
     React.useEffect(() => {
         setModalShow(bool)

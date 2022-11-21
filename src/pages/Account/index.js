@@ -62,11 +62,20 @@ function Account() {
   const authId = useSelector((state) => state.authId);
 
   const [currentUser, setCurrentUser] = useState()
+  const [countArtcles, setCountArticles] = useState(0)
+
   useEffect(() => {
     db.collection('users').doc(`${authId}`).onSnapshot((doc) => {
       setCurrentUser(doc.data());
     });
 }, [])
+
+React.useEffect(() => {
+  db.collection('articles').where("ownerId","==",authId)
+ .onSnapshot(snapshot => (
+  setCountArticles(snapshot.docs.length)
+ ))
+}, []);
 
 const theme = useTheme();
 const [value, setValue] = React.useState(0);
@@ -78,11 +87,18 @@ const handleChange = (event, newValue) => {
 const handleChangeIndex = (index) => {
   setValue(index);
 };
+
+const [data, setData] = React.useState([])
+React.useEffect(() => {
+  db.collection('articles').where("ownerId","==",authId).limit(4).onSnapshot((snapshot) => {
+      setData(snapshot.docs.map((doc) => doc.data()))
+  })
+})
   return (
     <DashboardLayout>
     <DashboardNavbar />
     <SoftTypography>
-    <Header />
+    <Header countArtcles={countArtcles} firstName={currentUser?.firstName} lastName={currentUser?.lastName} profilePhoto={currentUser?.profilePhoto}/>
     <Box sx={{ bgcolor: 'background.paper'}}>
     <AppBar position="static" style={{zIndex:1}}>
       <Tabs
@@ -113,13 +129,13 @@ const handleChangeIndex = (index) => {
       <Grid item xs={12} md={6} xl={6}>
       <ProfileInfoCard
         title="profile Info."
-        description="Hi, I’m Jessy Bandya, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
+        description={`Hi, I’m ${currentUser?.firstName} ${currentUser?.lastName}, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality).`}
         info={{
-          fullName: "Jessy U. Bandya",
-          mobile: "(254) 746 74 907",
-          email: "jessy.bandya5@mail.com",
-          regNo: "F16/137437/2019",
-          year: "4",
+          fullName: `${currentUser?.firstName} ${currentUser?.lastName}`,
+          mobile: `${currentUser?.phone}`,
+          email: `${currentUser?.email}`,
+          regNo: `${currentUser?.regNo}`,
+          year: `${currentUser?.yos}`,
         }}
         social={[
           {
@@ -142,7 +158,7 @@ const handleChangeIndex = (index) => {
       />
     </Grid>
     <Grid item xs={12} xl={6}>
-    <ProfilesList title="Sample Articles" profiles={profilesListData} />
+    <ProfilesList title="Sample Articles" profiles={data} />
   </Grid>
       </Grid>
       </TabPanel>
@@ -152,7 +168,7 @@ const handleChangeIndex = (index) => {
         overflowY: 'auto'
        }}
       >
-        <MyArticles />
+        <MyArticles userId={authId}/>
       </TabPanel>
 
     </SwipeableViews>

@@ -24,6 +24,8 @@ export default styled(Drawer)(({ theme, ownerState }) => {
       boxShadow: transparentSidenav ? "none" : xxl,
       marginBottom: transparentSidenav ? 0 : "inherit",
       left: "0",
+      zIndex:1,
+      overflowY:'auto',
       width: sidebarWidth,
       transform: "translateX(0)",
       transition: transitions.create(["width", "background-color"], {

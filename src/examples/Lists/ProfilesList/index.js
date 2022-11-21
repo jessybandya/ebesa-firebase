@@ -29,10 +29,20 @@ import SoftAvatar from "../../../components/SoftAvatar";
 import SoftButton from "../../../components/SoftButton";
 
 function ProfilesList({ title, profiles }) {
-  const renderProfiles = profiles.map(({ image, name, description, action }) => (
-    <SoftBox key={name} component="li" display="flex" alignItems="center" py={1} mb={1}>
+  const renderProfiles = profiles.map(({ fileData, title, description, fileType, articleID, ownerId }) => (
+    <SoftBox key={title} component="li" display="flex" alignItems="center" py={1} mb={1}>
       <SoftBox mr={2}>
-        <SoftAvatar src={image} alt="something here" variant="rounded" shadow="md" />
+      {fileType === "image" ?(
+        <>
+       {fileData === ""?(
+        <SoftAvatar src="http://www.wuyidoric.com.au/WuYiDoric/media/images/Projects/UniversityOfNairobiTowersProject/UniversityOfNairobiTowersProject_banner.jpg" alt={title} variant="rounded" shadow="md" />
+       ):(
+        <SoftAvatar src={fileData} alt={title} variant="rounded" shadow="md" />
+       )}  
+        </>
+      ):(
+        <SoftAvatar src="http://www.wuyidoric.com.au/WuYiDoric/media/images/Projects/UniversityOfNairobiTowersProject/UniversityOfNairobiTowersProject_banner.jpg" alt={title} variant="rounded" shadow="md" />
+      )}
       </SoftBox>
       <SoftBox
         display="flex"
@@ -41,29 +51,32 @@ function ProfilesList({ title, profiles }) {
         justifyContent="center"
       >
         <SoftTypography variant="button" fontWeight="medium">
-          {name}
+         {title}
         </SoftTypography>
         <SoftTypography variant="caption" color="text">
-          {description}
+        {description.length > 70 ?(
+          <>
+          {description.substring(0, 70)}<span style={{fontWeight:'bold'}}>...more</span>
+          </>
+        ):(
+          <>
+          {description.substring(0, 70)}
+          </>
+        )}
         </SoftTypography>
       </SoftBox>
       <SoftBox ml="auto">
-        {action.type === "internal" ? (
-          <SoftButton component={Link} to={action.route} variant="text" color="info">
-            {action.label}
-          </SoftButton>
-        ) : (
-          <SoftButton
-            component="a"
-            href={action.route}
-            target="_blank"
-            rel="noreferrer"
-            variant="text"
-            color={action.color}
-          >
-            {action.label}
-          </SoftButton>
-        )}
+         <Link to={`/article/true/${articleID}/${ownerId}`}>
+         <SoftButton
+         component="a"
+         target="_blank"
+         rel="noreferrer"
+         variant="text"
+         color="info"
+       >
+         View
+       </SoftButton>        
+         </Link>
       </SoftBox>
     </SoftBox>
   ));

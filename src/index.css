@@ -21,3 +21,7 @@
     display: block;
   }
 }
+
+.lightbox{
+   z-index: 100000px;
+}
