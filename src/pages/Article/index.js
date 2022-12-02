@@ -131,7 +131,7 @@ function Article() {
         </>
     )}
      <center>
-     <Button onClick={handleClose}>Close</Button>
+     <Button style={{backgroundColor:'#43a047', border:'1px solid #43a047'}} onClick={handleClose}>Close</Button>
      </center>
     </div>
   </Modal>

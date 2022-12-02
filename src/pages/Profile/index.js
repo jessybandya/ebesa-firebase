@@ -68,7 +68,7 @@ function Profile() {
     </Modal.Body>
     <Modal.Footer>
   
-     <Button onClick={handleClose}>Close</Button>
+     <Button onClick={handleClose} style={{backgroundColor:'#43a047',border:'1px solid #43a047'}}>Close</Button>
     </Modal.Footer>
   </Modal>
     </DashboardLayout>

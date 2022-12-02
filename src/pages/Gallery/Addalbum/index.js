@@ -20,17 +20,19 @@ function Addalbum({ setModalShow }) {
       const onAlbumCreate = () => {
         if (!albumName) {
           toast.error("Album Name is required!")
+        }else{
+          db.collection("albums").doc(albumId).set({
+            name: albumName,
+            albumId,
+            images,
+            ownerId:auth?.currentUser?.uid,
+            timestamp:Date.now()
+          });
+          setAlbumName("");
+          setModalShow(false)
+          history(`/album/${albumId}/${auth?.currentUser?.uid}`)
         }
-        db.collection("albums").doc(albumId).set({
-          name: albumName,
-          albumId,
-          images,
-          ownerId:auth?.currentUser?.uid,
-          timestamp:Date.now()
-        });
-        setAlbumName("");
-        setModalShow(false)
-        history(`/album/${albumId}/${auth?.currentUser?.uid}`)
+
       };
   return (
     <div>
@@ -45,7 +47,7 @@ function Addalbum({ setModalShow }) {
           alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <Avatar sx={{ m: 1, bgcolor: '#43a047' }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -68,6 +70,7 @@ function Addalbum({ setModalShow }) {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
             onClick={onAlbumCreate}
+            style={{backgroundColor:'#43a047',border:'1px solid #43a047'}}
           >
             Create Album
           </Button>

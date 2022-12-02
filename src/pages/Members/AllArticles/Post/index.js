@@ -180,7 +180,7 @@ function abbrNum(number, decPlaces) {
   return number;
 }
   return (
-    <Card sx={{ display: 'flex',margin:1,width:200 }}>
+    <Card sx={{ display: 'flex',margin:1,width:200,border:'1px solid #43a047' }}>
       <Box sx={{display: 'flex', flexDirection: 'column' }}>
       <center>
       <CardMedia
@@ -194,14 +194,11 @@ function abbrNum(number, decPlaces) {
           <Typography variant="h5">
           {firstName} {lastName}
           </Typography>
-          <Typography style={{fontWeight:'bold'}} variant="h5">
-          Articles: {abbrNum(artcleCount, 1)}
-          </Typography>
+
           <Box>
           <Link to={`/profile/true/${userId}`}>
           <SoftButton
-          style={{height:2}}
-          color="info"
+          style={{height:2,backgroundColor:'#43a047',color:'#fff'}}
           >Profile</SoftButton>
           </Link>
      </Box>

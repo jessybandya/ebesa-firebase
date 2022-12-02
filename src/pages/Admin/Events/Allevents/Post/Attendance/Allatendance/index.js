@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { db } from '../../../../firebase';
+import { db } from '../../../../../../../firebase';
 import Post from './Post';
 
 
@@ -22,7 +22,7 @@ const rows = [
   createData('China', 'CN', 1403500365, 9596961),
 ];
 
-export default function StickyHeadTable({ filteredPosts, searchTerm }) {
+export default function StickyHeadTable({ filteredPosts, searchTerm, eventId }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [posts, setPosts] = React.useState([])
@@ -30,7 +30,7 @@ export default function StickyHeadTable({ filteredPosts, searchTerm }) {
     const [input, setInput] = React.useState("");
 
      React.useEffect(() => {
-         db.collection('articles').onSnapshot(snapshot => {
+         db.collection('events').doc(eventId).collection('attendance').onSnapshot(snapshot => {
              setPosts(snapshot.docs.map(doc => ({
                  id: doc.id,
                  post: doc.data(),
@@ -62,13 +62,14 @@ export default function StickyHeadTable({ filteredPosts, searchTerm }) {
         <Table stickyHeader aria-label="sticky table">
           <TableHead sx={{ display: "table-header-group" }}>
             <TableRow>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}}>TITLE</TableCell>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}} align="right">OWNER</TableCell>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}} align="right">COMMENTS</TableCell>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}} align="right">LIKES</TableCell>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}} align="right">VIEW</TableCell>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}} align="right">DATE UPLOADED</TableCell>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}} align="right">ACTION</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "#43a047",fontWeight:"900",borderBottom: "2px solid #fff",color:"#fff"}}>F. NAME</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "#43a047",fontWeight:"900",borderBottom: "2px solid #fff",color:"#fff"}} align="right">L. NAME</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "#43a047",fontWeight:"900",borderBottom: "2px solid #fff",color:"#fff"}} align="right">EMAIL</TableCell>
+            <TableCell style={{minWidth:170,fontSize:13,backgroundColor: "#43a047",fontWeight:"900",borderBottom: "2px solid #fff",color:"#fff"}} align="right">PHONE NO.</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "#43a047",fontWeight:"900",borderBottom: "2px solid #fff",color:"#fff"}} align="right">REG. NO.</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "#43a047",fontWeight:"900",borderBottom: "2px solid #fff",color:"#fff"}} align="right">YOS</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "#43a047",fontWeight:"900",borderBottom: "2px solid #fff",color:"#fff"}} align="right">DEPARTMENT</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "#43a047",fontWeight:"900",borderBottom: "2px solid #fff",color:"#fff"}} align="right">ACTION</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -79,14 +80,16 @@ export default function StickyHeadTable({ filteredPosts, searchTerm }) {
                    posts.slice(pagesVisited, pagesVisited + menusPerPage).map(({id, post}) => (
                       <Post
                       key={id} 
-                      articleId={id}
-                      description={post.description}
-                      fileData={post.fileData}
-                      fileName={post.fileName}
-                      fileType={post.fileType}
-                      title={post.title}
+                      postId={id}
+                      department={post.department}
+                      email={post.email}
+                      firstName={post.firstName}
+                      lastName={post.lastName}
+                      phone={post.phone}
+                      regNo={post.regNo}
                       timestamp={post.timestamp}
-                      ownerId={post.ownerId}
+                      yos={post.yos}
+                      eventId={eventId}
                       />
                     ))
     }
@@ -103,20 +106,22 @@ export default function StickyHeadTable({ filteredPosts, searchTerm }) {
                              filteredPosts.map((posts2) => (
    
    <Post 
-   articleId={posts2?.articleID}
-   description={posts2?.description}
-   fileData={posts2?.fileData}
-   fileName={posts2?.fileName}
-   fileType={posts2?.fileType}
-   title={posts2?.title}
-   timestamp={posts2?.timestamp}
-   ownerId={posts2?.ownerId}
+   postId={posts2.userId}
+   department={posts2.department}
+   email={posts2.email}
+   firstName={posts2.firstName}
+   lastName={posts2.lastName}
+   phone={posts2.phone}
+   regNo={posts2.regNo}
+   timestamp={posts2.timestamp}
+   yos={posts2.yos}
+   eventId={eventId}
    />
    ))
                              }
              </>
            ):(
-             <><center style={{fontWeight:'bold'}}><h4>No results...</h4></center></>
+             <><center style={{fontWeight:'bold'}}><h5>No results...</h5></center></>
            )       
          
          }

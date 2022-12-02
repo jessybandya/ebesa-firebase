@@ -35,6 +35,7 @@ import Articles from "./pages/Articles";
 import Article from "./pages/Article";
 import Profile from "./pages/Profile";
 import Album from "./pages/Gallery/Album";
+import Event from './pages/Events/Event'
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -137,8 +138,7 @@ export default function App() {
               onMouseLeave={handleOnMouseLeave}
               style={{zIndex:1}}
             />
-            <Configurator />
-            {configsButton}
+
           </>
         )}
         <Routes>
@@ -149,6 +149,7 @@ export default function App() {
           <Route exact path="/article/:bool/:articleID/:ownerID" element={<Article />} />
           <Route exact path="/profile/:bool/:ownerID" element={<Profile />} />
           <Route exact path="/album/:albumId/:uid" element={<Album />} />
+          <Route exact path="/event/:bool/:id" element={<Event />} />
         </Routes>
         </>
       ):(
@@ -164,8 +165,7 @@ export default function App() {
               onMouseLeave={handleOnMouseLeave}
               style={{zIndex:1}}
             />
-            <Configurator />
-            {configsButton}
+
           </>
         )}
         <Routes>
@@ -176,6 +176,7 @@ export default function App() {
           <Route exact path="/profile/:bool/:ownerID" element={<Profile />} />
           <Route exact path="/article/:bool/:articleID/:ownerID" element={<Article />} />
           <Route exact path="/album/:albumId/:uid" element={<Album />} />
+          <Route exact path="/event/:bool/:id" element={<Event />} />
         </Routes>
         </>
       )}
