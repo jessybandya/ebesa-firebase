@@ -49,7 +49,7 @@ function Articles() {
     sx={{ display: 'flex', alignItems: 'center'}}
   >
   <IconButton type="button" sx={{ p: '10px' }} aria-label="pdf">
-  <PictureAsPdfIcon />
+  <PictureAsPdfIcon style={{color:'#43a047'}}/>
 </IconButton>
     <InputBase
       sx={{ ml: 1, flex: 1 }}
@@ -63,7 +63,7 @@ function Articles() {
     <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
     {auth?.currentUser?.uid &&(
       <IconButton color="primary" sx={{ p: '10px' }} aria-label="directions">
-      <DriveFolderUploadIcon onClick={() => setModalShow(true)}/>
+      <DriveFolderUploadIcon onClick={() => setModalShow(true)} style={{color:'#43a047'}}/>
     </IconButton>   
     )}   
   </Paper>  
@@ -76,7 +76,6 @@ function Articles() {
   onHide={() => setModalShow(false)}
   size="lg"
   aria-labelledby="contained-modal-title-vcenter"
-  centered
 >
   <Modal.Header closeButton>
     <Modal.Title id="contained-modal-title-vcenter">

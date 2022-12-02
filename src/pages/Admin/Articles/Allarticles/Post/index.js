@@ -51,7 +51,7 @@ function Post({ articleId, description, fileData, fileType, title, ownerId, time
         </TableCell>
         <TableCell align='right'> 
         <Link to={`/profile/true/${ownerId}`}>
-        <RemoveRedEyeIcon style={{color:'#17c1e8',cursor:'pointer'}} fontSize='medium'/>              
+        <RemoveRedEyeIcon style={{color:'#43a047',cursor:'pointer'}} fontSize='medium'/>              
         </Link> 
         </TableCell>
         <TableCell align='right'>
@@ -62,14 +62,14 @@ function Post({ articleId, description, fileData, fileType, title, ownerId, time
         </TableCell>
         <TableCell align='right'>
         <Link to={`/article/true/${articleId}/${ownerId}`}>
-        <RemoveRedEyeIcon style={{color:'#17c1e8',cursor:'pointer'}} fontSize='medium'/>              
+        <RemoveRedEyeIcon style={{color:'#43a047',cursor:'pointer'}} fontSize='medium'/>              
         </Link>           
         </TableCell>
         <TableCell align='right'>
         {date.toDateString()}                 
         </TableCell>
         <TableCell align='right'>
-         <DeleteForeverIcon onClick={deleteArticle} style={{color:'#17c1e8',cursor:'pointer'}} fontSize='medium'/>                  
+         <DeleteForeverIcon onClick={deleteArticle} style={{color:'#43a047',cursor:'pointer'}} fontSize='medium'/>                  
         </TableCell>
   </TableRow>
   )

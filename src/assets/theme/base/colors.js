@@ -1,24 +1,3 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v3.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-pro-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-/**
- * The base colors for the Soft UI Dashboard React.
- * You can add new color using this file.
- * You can customized the colors for the entire Soft UI Dashboard React using thie file.
- */
-
 const colors = {
   background: {
     default: "#f8f9fa",
@@ -98,23 +77,21 @@ const colors = {
 
   gradients: {
     primary: {
-      main: "#7928ca",
+      main: "#1b5e20",
       state: "#ff0080",
     },
 
     secondary: {
-      main: "#627594",
-      state: "#a8b8d8",
+
     },
 
     info: {
-      main: "#2152ff",
-      state: "#21d4fd",
+      main: "#1b5e20",
+      state: "#81c784",
     },
 
     success: {
-      main: "#17ad37",
-      state: "#98ec2d",
+
     },
 
     warning: {
@@ -128,12 +105,12 @@ const colors = {
     },
 
     light: {
-      main: "#ced4da",
+      main: "#1b5e20",
       state: "#ebeff4",
     },
 
     dark: {
-      main: "#141727",
+      main: "#1b5e20",
       state: "#3a416f",
     },
   },
@@ -214,60 +191,60 @@ const colors = {
     },
 
     info: {
-      main: "#2152ff",
-      state: "#02c6f3",
+      main: "#1b5e20",
+      state: "#1b5e20",
       border: "#b9ecf8",
     },
 
     success: {
-      main: "#17ad37",
+      main: "#1b5e20",
       state: "#84dc14",
       border: "#daf3b9",
     },
 
     warning: {
-      main: "#f53939",
+      main: "#1b5e20",
       state: "#fac60b",
       border: "#fef1c2",
     },
 
     error: {
-      main: "#ea0606",
+      main: "#1b5e20",
       state: "#ff3d59",
       border: "#f9b4b4",
     },
 
     light: {
-      main: "#ced4da",
+      main: "#1b5e20",
       state: "#d1dae6",
       border: "#f8f9fa",
     },
 
     dark: {
-      main: "#141727",
-      state: "#2c3154",
+      main: "#1b5e20",
+      state: "#1b5e20",
       border: "#c2c8d1",
     },
   },
 
   badgeColors: {
     primary: {
-      background: "#f883dd",
+      background: "#1b5e20",
       text: "#a3017e",
     },
 
     secondary: {
-      background: "#e4e8ed",
+      background: "#1b5e20",
       text: "#5974a2",
     },
 
     info: {
-      background: "#abe9f7",
-      text: "#08a1c4",
+      background: "#1b5e20",
+      text: "#1b5e20",
     },
 
     success: {
-      background: "#cdf59b",
+      background: "#1b5e20",
       text: "#67b108",
     },
 
@@ -300,11 +277,11 @@ const colors = {
   },
 
   sliderColors: {
-    thumb: { borderColor: "#d9d9d9" },
+    thumb: { borderColor: "#1b5e20" },
   },
 
   circleSliderColors: {
-    background: "#d3d3d3",
+    background: "#1b5e20",
   },
 
   tabs: {

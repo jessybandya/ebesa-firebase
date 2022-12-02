@@ -60,7 +60,7 @@ function Gallery() {
     <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
     {auth?.currentUser?.uid &&(
       <IconButton color="primary" sx={{ p: '10px' }} aria-label="directions">
-      <DriveFolderUploadIcon onClick={() => setModalShow(true)}/>
+      <DriveFolderUploadIcon onClick={() => setModalShow(true)} style={{color:'#43a047'}}/>
       </IconButton>        
     )}
   </Paper>  
@@ -75,8 +75,8 @@ function Gallery() {
   centered
 >
   <Modal.Header closeButton>
-    <Modal.Title id="contained-modal-title-vcenter">
-      Add Album
+    <Modal.Title style={{color:'#43a047'}} id="contained-modal-title-vcenter">
+      Create Album
     </Modal.Title>
   </Modal.Header>
   <Modal.Body>

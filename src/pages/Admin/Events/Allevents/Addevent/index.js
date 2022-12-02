@@ -81,7 +81,7 @@ export default function SignUp({ setModalShow }) {
           }}
         >
           <Typography component="h1" variant="h5">
-            Add Event
+            ADD EVENT
           </Typography>
           <Box sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -106,6 +106,8 @@ export default function SignUp({ setModalShow }) {
                   name="description"
                   autoComplete="family-name"
                   onChange={(e) => setDescription(e.target.value)}
+                  multiline
+                  rows={2}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -120,7 +122,9 @@ export default function SignUp({ setModalShow }) {
                 />
               </Grid>
             </Grid>
-            <Grid item xs={12}>
+            
+            <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
             <Box sx={{ mt: 3, ml: 0 }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
@@ -132,13 +136,21 @@ export default function SignUp({ setModalShow }) {
               }}
             />
           </LocalizationProvider>     
-            </Box>
+            </Box>            
             </Grid>
-            <Button
-              type="submit"
+            <Grid item xs={12} sm={6}>
+            <Box sx={{ mt: 3, ml: 0 }}>
+            <TextField
+              type='file'
               fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              id="Title"
+            />
+            </Box>
+          </Grid>
+          </Grid>
+            <Button
+              fullWidth
+              style={{ marginTop: 15, marginBottom: 2, backgroundColor:'#43a047', color:'#fff' }}
               onClick={addEvent}
             >
             {loading === true ?(

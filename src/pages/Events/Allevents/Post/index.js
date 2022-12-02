@@ -21,13 +21,60 @@ import { auth,db } from '../../../../firebase'
 import Rating from '@mui/material/Rating';
 import { Avatar } from '@mui/material'
 import { Input } from 'antd';
+import { Link } from 'react-router-dom'
 import {
     SendOutlined
   } from '@ant-design/icons';
   import { toast } from "react-toastify"
 import { useSelector } from 'react-redux'
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  HatenaShareButton,
+  InstapaperShareButton,
+  LineShareButton,
+  LinkedinShareButton,
+  LivejournalShareButton,
+  MailruShareButton,
+  OKShareButton,
+  PinterestShareButton,
+  PocketShareButton,
+  RedditShareButton,
+  TelegramShareButton,
+  TumblrShareButton,
+  TwitterShareButton,
+  ViberShareButton,
+  VKShareButton,
+  WhatsappShareButton,
+  WorkplaceShareButton
+} from "react-share";
+
+import {
+  EmailIcon,
+  FacebookIcon,
+  FacebookMessengerIcon,
+  HatenaIcon,
+  InstapaperIcon,
+  LineIcon,
+  LinkedinIcon,
+  LivejournalIcon,
+  MailruIcon,
+  OKIcon,
+  PinterestIcon,
+  PocketIcon,
+  RedditIcon,
+  TelegramIcon,
+  TumblrIcon,
+  TwitterIcon,
+  ViberIcon,
+  VKIcon,
+  WeiboIcon,
+  WhatsappIcon,
+  WorkplaceIcon
+} from "react-share";
 
   const { TextArea } = Input;
+  
 
 const labels = {
   0.5: 'Useless',
@@ -88,6 +135,7 @@ function Post({ eventId, images, status, description, title, venue, date, timest
   const [hover, setHover] = React.useState(-1);
   const [submitComment, setSubmitComment] = React.useState('')
   const [currentUser, setCurrentUser] = React.useState('')
+  const [posts, setPosts] = React.useState([])
 
   React.useEffect(() => {
     db.collection('users').doc(`${auth?.currentUser?.uid}`).onSnapshot((doc) => {
@@ -107,6 +155,51 @@ function Post({ eventId, images, status, description, title, venue, date, timest
 
   }
 
+  React.useEffect(() => {
+    db.collection('events').doc(eventId).collection("reviews").onSnapshot(snapshot => {
+        setPosts(snapshot.docs.map(doc => ({
+            id: doc.id,
+            post: doc.data(),
+        })));
+    })
+}, []);
+
+  const totalRatings = (posts.reduce((a,v) =>  a = a + v.post.rating , 0 ))
+  const numberOfRatings = posts.length
+  const rating = totalRatings / numberOfRatings
+  var a = Math.round(rating * 10) / 10
+  var b = posts.length
+
+  function abbrNum(number, decPlaces) {
+    // 2 decimal places => 100, 3 => 1000, etc
+    decPlaces = Math.pow(10,decPlaces);
+  
+    // Enumerate number abbreviations
+    var abbrev = [ "K", "M", "B", "T" ];
+  
+    // Go through the array backwards, so we do the largest first
+    for (var i=abbrev.length-1; i>=0; i--) {
+  
+        // Convert array index to "1000", "1000000", etc
+        var size = Math.pow(10,(i+1)*3);
+  
+        // If the number is bigger or equal do the abbreviation
+        if(size <= number) {
+             // Here, we multiply by decPlaces, round, and then divide by decPlaces.
+             // This gives us nice rounding to a particular decimal place.
+             number = Math.round(number*decPlaces/size)/decPlaces;
+  
+             // Add the letter for the abbreviation
+             number += abbrev[i];
+  
+             // We are done... stop
+             break;
+        }
+    }
+  
+    return number;
+  }
+
   return (
     <Card
     sx={{
@@ -115,7 +208,8 @@ function Post({ eventId, images, status, description, title, venue, date, timest
       backgroundColor: "transparent",
       overflow: "visible",
       margin:1,
-      padding:1
+      padding:1,
+      border:'1px solid #43a047'
     }}
   >
     <SoftBox position="relative" width="100.25%" shadow="xl" borderRadius="xl">
@@ -143,118 +237,30 @@ function Post({ eventId, images, status, description, title, venue, date, timest
           </SoftTypography>
       </SoftBox>
       <SoftBox style={{display:'flex',alignItems:'center',justifyContent:'space-between',fontSize:15}}>
-      <div><StarIcon />3.5/5</div>
-      <div><ReviewsIcon />12</div>
+      <div><StarIcon style={{color:'#FFD700'}}/>{numberOfRatings === 0 ?(<>0</>):(<>{a}</>)}/5</div>
+      <div><ReviewsIcon style={{color:'#43a047'}}/>{abbrNum(b,1)}</div>
       </SoftBox>
       <hr/>
       <SoftBox display="flex" justifyContent="space-between" alignItems="center">
-          <SoftButton
-            variant="outlined"
-            size="small"
-            color="info"
-            onClick={() => setModalShow(true)}
-          >
-            view
-          </SoftButton>
+      <Link to={`/event/true/${eventId}`}>
+      <SoftButton
+      variant="outlined"
+      size="small"
+      onClick={() => setModalShow(true)}
+      style={{backgroundColor:'#43a047',border:'1px solid #43a047'}}
+    >
+      view
+    </SoftButton>    
+      </Link>
+
         <SoftBox display="flex">
         {status === true ?(
-          <span style={{fontWeight:'bold',fontSize:20}}><AccessTimeIcon /></span>
-        ):(<span style={{fontWeight:'bold',fontSize:20}}><TaskIcon /></span>)}
+          <span style={{fontWeight:'bold',fontSize:20, color:'#43a047'}}><AccessTimeIcon /></span>
+        ):(<span style={{fontWeight:'bold',fontSize:20, color:'#43a047'}}><TaskIcon /></span>)}
         </SoftBox>
       </SoftBox>
     </SoftBox>
-    <Modal
-    show={modalShow}
-    style={{zIndex:2000}}
-    onHide={() => setModalShow(false)}
-    size="lg"
-    aria-labelledby="contained-modal-title-vcenter"
-    centered
-  >
-    <Modal.Header closeButton>
 
-    </Modal.Header>
-    <Modal.Body
-    style={{
-      height:'70vh',
-      overflowY:'auto'
-    }}
-    >
-    <Box sx={{ bgcolor: 'background.paper' }}>
-      <AppBar position="static">
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="secondary"
-          textColor="inherit"
-          variant="fullWidth"
-          aria-label="full width tabs example"
-        >
-          <Tab label="Overview" {...a11yProps(0)} />
-          <Tab label="Reviews" {...a11yProps(1)} />
-          <Tab label="Gallery" {...a11yProps(2)} />
-        </Tabs>
-      </AppBar>
-      <SwipeableViews
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={value}
-        onChangeIndex={handleChangeIndex}
-      >
-        <TabPanel value={value} index={0} dir={theme.direction}>
-          <Viewevent description={description} title={title} venue={venue} date={date} status={status} eventId={eventId}/>
-        </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          Reviews
-        </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
-          Gallery
-        </TabPanel>
-      </SwipeableViews>
-    </Box>
-    </Modal.Body>
-    {auth?.currentUser?.uid  && value === 1 &&(
-      <center>
-      <Box
-      sx={{
-        width: 200,
-        display: 'flex',
-        alignItems: 'center',
-      }}
-    >
-      <Rating
-        name="hover-feedback"
-        value={value1}
-        precision={0.5}
-        getLabelText={getLabelText}
-        onChange={(event, newValue) => {
-          setValue1(newValue);
-        }}
-        onChangeActive={(event, newHover) => {
-          setHover(newHover);
-        }}
-        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-      />
-      {value !== null && (
-        <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value1]}</Box>
-      )}
-    </Box>
-    <div style={{display:'flex',alignItems:'center',padding:5}}>
-    <TextArea placeholder={`Hey ${currentUser?.firstName}, waiting for your review 😊...`} style={{borderRadius:10}}
-    value={submitComment}
-    onChange={e => setSubmitComment(e.target.value)}
-    /> 
-    
-    {submitComment === "" ?(
-        <Avatar src={currentUser?.profilePhoto} alt={currentUser?.firstName} style={{marginRight:20,marginLeft:3,cursor:'pointer'}}/>
-    ):(
-        <SendOutlined onClick={submitCommentFun} style={{marginRight:20,marginLeft:3,cursor:'pointer',fontSize:'20px'}}/>
-    )}
-    </div>
-     </center>
-    )
-
-    }
-  </Modal>
   </Card>
   )
 }

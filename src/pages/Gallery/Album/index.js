@@ -75,7 +75,7 @@ function Album() {
     <DashboardNavbar/>
     {authId === uid &&(
       <center style={{marginBottom:5}}>     
-      <Fab onClick={() => setModalShow(true)} color="primary" aria-label="add">
+      <Fab onClick={() => setModalShow(true)} color="primary" aria-label="add" style={{backgroundColor:'#43a047'}}>
       <Add fontSize="large" />
     </Fab>
    </center>
@@ -108,7 +108,7 @@ function Album() {
     /> 
       </div>
       <div>
-      <Button onClick={onUpload} component="span">
+      <Button onClick={onUpload} component="span" style={{backgroundColor:'#43a047',border:'1px solid #43a047'}}>
       Upload
     </Button>
       </div> 
