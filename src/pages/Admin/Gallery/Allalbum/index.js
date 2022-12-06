@@ -62,12 +62,12 @@ export default function StickyHeadTable({ filteredPosts, searchTerm }) {
         <Table stickyHeader aria-label="sticky table">
           <TableHead sx={{ display: "table-header-group" }}>
             <TableRow>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #17c1e8",color:"#17c1e8"}}>ALBUM NAME</TableCell>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #17c1e8",color:"#17c1e8"}} align="right">NO. IMAGES</TableCell>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #17c1e8",color:"#17c1e8"}} align="right">OWNER</TableCell>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #17c1e8",color:"#17c1e8"}} align="right">VIEW</TableCell>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #17c1e8",color:"#17c1e8"}} align="right">DATE UPLOADED</TableCell>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #17c1e8",color:"#17c1e8"}} align="right">ACTION</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}}>ALBUM NAME</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}} align="right">NO. IMAGES</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}} align="right">OWNER</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}} align="right">VIEW</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}} align="right">DATE UPLOADED</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}} align="right">ACTION</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

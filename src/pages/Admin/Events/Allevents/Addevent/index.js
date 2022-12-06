@@ -18,7 +18,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { toast } from 'react-toastify'
 import { Space, Spin } from 'antd';
-import { db } from '../../../../../firebase';
+import { db, storage } from '../../../../../firebase';
 
 const theme = createTheme();
 
@@ -31,41 +31,89 @@ export default function SignUp({ setModalShow }) {
     const [loading, setLoading] = React.useState(false);
     const eventId = db.collection('events').doc().id
     const [images, setImages] = React.useState([])
-    const addEvent = () => {
+    const [file, setFile] = React.useState(null)
+
+const onFileChange = (e) => {
+  setFile(e.target.files[0])
+}
+    const addEvent = async() => {
         setLoading(true)
-        if(!title){
-           toast.error("Title required!")
-           setLoading(false)
-         }else if(!description){
-           toast.error("Description required!")
-           setLoading(false)
-         }else if(!venue){
-           toast.error("Venue required!")
-           setLoading(false)
-         }else if(time <= Date.now()){
-            toast.error("Select date and time ahead!")
+        if(file === null){
+          if(!title){
+            toast.error("Title required!")
             setLoading(false)
-          }else{
-            db.collection("events").doc(eventId).set({
-              eventId,
-             title,
-             description,
-             date:time.toString(),
-             venue,
-             images,
-             status:true,
-             timestamp:Date.now()
-            })
-            .then((r) => {
-             toast.success("Event has been added!")
+          }else if(!description){
+            toast.error("Description required!")
+            setLoading(false)
+          }else if(!venue){
+            toast.error("Venue required!")
+            setLoading(false)
+          }else if(time <= Date.now()){
+             toast.error("Select date and time ahead!")
              setLoading(false)
-             setTitle("")
-             setDescription("")
-             setVenue("")
-             setTime(Date.now())
-             setModalShow(false)
-         }) 
-         }
+           }else{
+             db.collection("events").doc(eventId).set({
+               eventId,
+              title,
+              description,
+              date:time.toString(),
+              venue,
+              posterImage: '',
+              images,
+              status:true,
+              timestamp:Date.now()
+             })
+             .then((r) => {
+              toast.success("Event has been added!")
+              setLoading(false)
+              setTitle("")
+              setDescription("")
+              setVenue("")
+              setFile(null)
+              setTime(Date.now())
+              setModalShow(false)
+          }) 
+          }
+        }else{
+          if(!title){
+            toast.error("Title required!")
+            setLoading(false)
+          }else if(!description){
+            toast.error("Description required!")
+            setLoading(false)
+          }else if(!venue){
+            toast.error("Venue required!")
+            setLoading(false)
+          }else if(time <= Date.now()){
+             toast.error("Select date and time ahead!")
+             setLoading(false)
+           }else{
+             const storageRef = storage.ref()
+             const fileRef = storageRef.child(file.name)
+             await fileRef.put(file)
+             db.collection("events").doc(eventId).set({
+               eventId,
+              title,
+              description,
+              date:time.toString(),
+              venue,
+              posterImage: await fileRef.getDownloadURL(),
+              images,
+              status:true,
+              timestamp:Date.now()
+             })
+             .then((r) => {
+              toast.success("Event has been added!")
+              setLoading(false)
+              setTitle("")
+              setDescription("")
+              setVenue("")
+              setFile(null)
+              setTime(Date.now())
+              setModalShow(false)
+          }) 
+          }
+        }
     }
 
   return (
@@ -81,7 +129,7 @@ export default function SignUp({ setModalShow }) {
           }}
         >
           <Typography component="h1" variant="h5">
-            ADD EVENT
+            <span style={{color:'#43a047',fontWeight:'bold'}}>ADD EVENT</span>
           </Typography>
           <Box sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -144,6 +192,7 @@ export default function SignUp({ setModalShow }) {
               type='file'
               fullWidth
               id="Title"
+              onChange={onFileChange}
             />
             </Box>
           </Grid>

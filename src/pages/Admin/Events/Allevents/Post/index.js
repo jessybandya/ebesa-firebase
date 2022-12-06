@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import { db } from '../../../../../firebase';
+import { db,storage } from '../../../../../firebase';
 import { Link } from "react-router-dom"
 import { toast } from "react-toastify"
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
@@ -25,6 +25,29 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Attendance from './Attendance'
+import Reviews from '../../../../Events/Event/Reviews'
+import Gallery from './Gallery'
+import { Avatar, Fab, ImageListItem } from '@mui/material'
+import { Add, CheckCircleOutline } from '@mui/icons-material'; 
+import firebase from 'firebase'
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Dialog from '@mui/material/Dialog';
+import ListItemText from '@mui/material/ListItemText';
+import ListItem from '@mui/material/ListItem';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Slide from '@mui/material/Slide';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 
 function TabPanel(props) {
@@ -60,6 +83,8 @@ function a11yProps(index) {
   };
 }
 
+const theme = createTheme();
+
 function Post({ eventId, date, description, status, title, venue, images }) { 
      const [posts, setPosts] = useState([])
      const [countReviews, setCountReviews] = useState(0)
@@ -68,6 +93,21 @@ function Post({ eventId, date, description, status, title, venue, images }) {
      const [value, setValue] = React.useState(0);
      const [value1, setValue1] = React.useState(0);
      const theme = useTheme();
+     const [show1, setShow1] = useState(false);
+     const [modalShow, setModalShow] = React.useState(false);
+     const [loading, setLoading] = useState(false)
+     const [open, setOpen] = React.useState(false);
+
+     const handleClickOpen = () => {
+       setOpen(true);
+     };
+   
+     const handleClose3 = () => {
+       setOpen(false);
+     };
+
+     const handleClose1 = () => setShow1(false);
+     const handleShow1 = () => setShow1(true);
 
      const handleClose = () =>{
       setShow(false)
@@ -132,13 +172,60 @@ toast.success("Successfully opened the event Registration!")
   }
 }
 
+const deleteEvent = () =>{
+  if(window.confirm(`Are you sure you want to delete event: ${title}`)){
+      db.collection("events").doc(eventId).delete().then(function() {
+      }).catch(function(error) {
+          toast.error("Error removing post: ", error);
+      }); 
+      toast.success(`Event ${title} has been deleted successfully!`)   
+    }
+}
+
+
+const handleClose2 = () =>{
+  setModalShow(false)
+  setFile(null)
+}
+
+const [file, setFile] = useState(null)
+
+const onFileChange = (e) => {
+  setFile(e.target.files[0])
+}
+
+const onUpload = async () => {
+  setLoading(true)
+  if(file === null){
+    toast.error("Kindly add an image!")
+    setLoading(false)
+  }else{
+    setLoading(true)
+    const storageRef = storage.ref()
+    const fileRef = storageRef.child(file.name)
+    await fileRef.put(file)
+    db.collection("events").doc(eventId).update({
+      images: firebase.firestore.FieldValue.arrayUnion({
+        name: file.name,
+        url: await fileRef.getDownloadURL(),
+        timestamp:Date.now(),
+        comment:title,
+      })
+    })
+    toast.success("successfully apploaded a photo...")
+    setLoading(false)
+  }
+}
+
   return (
     <>
     <TableRow hover role="checkbox" tabIndex={-1}>
     <TableCell style={{color:'#43a047'}}> 
     {title}        
     </TableCell>
-
+    <TableCell style={{color:'#43a047'}} align='right'>
+    <RemoveRedEyeIcon onClick={() => setShow1(true)} fontSize='medium' style={{color:'#43a047',cursor:'pointer'}}/>                  
+    </TableCell>
     <TableCell style={{color:'#43a047'}} align='right'>
        {venue}                
     </TableCell>
@@ -165,7 +252,7 @@ toast.success("Successfully opened the event Registration!")
    )}
   </TableCell>
    <TableCell align='right'>
-      <RemoveRedEyeIcon onClick={() => setShow(true)} fontSize='medium' style={{color:'#43a047',cursor:'pointer'}}/>                
+      <RemoveRedEyeIcon onClick={handleClickOpen} fontSize='medium' style={{color:'#43a047',cursor:'pointer'}}/>                
   </TableCell>
  <TableCell align='right'>
  {status === true ?(
@@ -173,49 +260,54 @@ toast.success("Successfully opened the event Registration!")
  ):(
   <DoneAllIcon onClick={openEvent} fontSize='medium' style={{color:'#43a047',cursor:'pointer'}}/>                
  )}
- <DeleteForeverIcon fontSize='medium' style={{color:'#43a047',cursor:'pointer'}}/>                
+ <DeleteForeverIcon onClick={deleteEvent} fontSize='medium' style={{color:'#43a047',cursor:'pointer'}}/>                
                  
 </TableCell>
 </TableRow>
 
 
 
-<Modal
-show={show}
-onHide={() => setShow(false)}
-dialogClassName="modal-90w"
-aria-labelledby="example-custom-modal-styling-title"
-style={{maxWidth:'none'}}
->
-<Modal.Header style={{display: 'block'}}>
-      <div style={{display:'flex',justifyContent:'space-between'}}>
-        <div><span style={{color:'#43a047',fontWeight:'bold'}}>General Overview</span></div>
-        <div><CloseIcon fontSize="large" onClick={handleClose} style={{color:'#88888888',cursor:'pointer'}}/></div>
-      </div>
 
-      <div>
-      <AppBar position="static">
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        indicatorColor="secondary"
-        textColor="inherit"
-        variant="fullWidth"
-        aria-label="full width tabs example"
-      >
-        <Tab label="Attendance" {...a11yProps(0)} />
-        <Tab label="Reviews" {...a11yProps(1)} />
-        <Tab label="Gallery" {...a11yProps(2)} />
-      </Tabs>
-    </AppBar>
-      </div>
-</Modal.Header>
-<Modal.Body
-style={{
-  height:'70vh',
-  overflowY:'auto'
-}}
+
+<Dialog
+fullScreen
+open={open}
+onClose={handleClose3}
+TransitionComponent={Transition}
+sx={{ zIndex: 1000}}
 >
+<AppBar style={{backgroundColor:'#fff'}} sx={{ position: 'fixed' }}>
+  <Toolbar>
+    <IconButton
+      edge="start"
+      color="inherit"
+      onClick={handleClose3}
+      aria-label="close"
+    >
+      <CloseIcon />
+    </IconButton>
+    <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+    
+  </Typography>
+    <Button style={{backgroundColor:'#43a047',border:'1px solid #43a047'}} autoFocus color="inherit" onClick={handleClose3}>
+      Close
+    </Button>
+  </Toolbar>
+
+  <Tabs
+    value={value}
+    onChange={handleChange}
+    indicatorColor="secondary"
+    textColor="inherit"
+    variant="fullWidth"
+    aria-label="full width tabs example"
+  >
+    <Tab label={`Attendance (${countAttendance})`} {...a11yProps(0)} />
+    <Tab label={`Reviews (${countReviews})`} {...a11yProps(1)} />
+    <Tab label="Gallery" {...a11yProps(2)} />
+  </Tabs>
+</AppBar>
+<List style={{marginTop:120}}>
 <Box sx={{ bgcolor: 'background.paper' }}>
 <SwipeableViews
   axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
@@ -226,15 +318,72 @@ style={{
      <Attendance eventId={eventId} title={title}/>
    </TabPanel>
   <TabPanel value={value} index={1} dir={theme.direction}>
-    Reviews
+  <Reviews eventId={eventId} />
   </TabPanel>
   <TabPanel value={value} index={2} dir={theme.direction}>
-    Gallery
+  <center style={{marginTop:-20}}>     
+  <Fab onClick={() => setModalShow(true)} color="primary" aria-label="add" style={{backgroundColor:'#43a047'}}>
+  <Add fontSize="large" />
+</Fab>
+</center>
+    <Gallery eventId={eventId}/>
   </TabPanel>
 </SwipeableViews>
 </Box>
-</Modal.Body>
+</List>
+</Dialog>
+
+
+
+
+<Modal show={show1} onHide={handleClose1}>
+<Modal.Header closeButton>
+<span style={{color:'#43a047',fontWeight:'bold'}}>DESCRIPTION</span>
+</Modal.Header>
+<Modal.Body><b>{description}</b></Modal.Body>
 </Modal>
+
+
+
+<Modal
+    show={modalShow}
+    onHide={handleClose2}
+    size="lg"
+    aria-labelledby="contained-modal-title-vcenter"
+    centered
+  >
+    <Modal.Header closeButton>
+    </Modal.Header>
+    <Modal.Body>
+      <center><b><h4 style={{fontWeight:'bold'}}>UPLOAD IMAGE</h4></b></center>
+      <hr />
+      <center style={{flexDirection:'column'}}>
+      <ThemeProvider theme={theme}>
+      <Grid item xs={12} sm={6}>
+      <Box sx={{ mt: 3, ml: 0 }}>
+      <TextField
+      accept="image/*"
+      id="raised-button-file"
+      type="file"
+      onChange={onFileChange}
+        // fullWidth
+      />
+      </Box>
+    </Grid>
+      </ThemeProvider>
+      <div>
+      <Button onClick={onUpload} component="span" style={{backgroundColor:'#43a047',border:'1px solid #43a047',marginTop:5}}>
+        {loading === true ?(
+          <>Uploading...</>
+        ):(
+          <>Upload</>
+        )}
+    </Button>
+      </div> 
+      </center>
+    </Modal.Body>
+  </Modal>
+
 </>
   )
 }

@@ -52,7 +52,7 @@ function Footer({ company, links }) {
       >
         &copy; {new Date().getFullYear()}, made with
         <SoftBox fontSize={size.md} color="text" mb={-0.5} mx={0.25}>
-          <Icon color="inherit" style={{color:'#0d6efd'}} fontSize="inherit">
+          <Icon color="inherit" style={{color:'#43a047'}} fontSize="inherit">
             favorite
           </Icon>
         </SoftBox>
@@ -82,22 +82,22 @@ function Footer({ company, links }) {
         })}
       >
       <SoftBox>
-      <Link href="https://twitter.com/jessybandya" target="__blank">
+      <Link href="#" target="__blank">
       <TwitterIcon color="inherit" fontSize="inherit"/>
       </Link>
     </SoftBox>
     <SoftBox fontSize={size.md} color="text" mb={-0.5} mx={1.0}>
-    <Link href="https://www.instagram.com/jessybandya/" target="__blank">
+    <Link href="#" target="__blank">
     <InstagramIcon color="inherit" fontSize="inherit"/>
     </Link>
   </SoftBox>
   <SoftBox fontSize={size.md} color="text" mb={-0.5} mx={1.0}>
-  <Link href="https://www.linkedin.com/in/jessy-bandya-7934a01b4/" target="__blank">
+  <Link href="#" target="__blank">
   <LinkedInIcon color="inherit" fontSize="inherit"/>
   </Link>
 </SoftBox>
 <SoftBox fontSize={size.md} color="text" mb={-0.5} mx={1.0}>
-<Link href="https://github.com/jessybandya" target="__blank">
+<Link href="#" target="__blank">
 <GitHubIcon color="inherit" fontSize="inherit"/>
  </Link>
  </SoftBox>
@@ -108,7 +108,7 @@ function Footer({ company, links }) {
 
 // Setting default values for the props of Footer
 Footer.defaultProps = {
-  company: { href: "https://laughing-darwin-c668f3.netlify.app/", name: "Jessy Bandya" },
+  company: { href: "#", name: "Ebesa Team" },
 };
 
 // Typechecking props for the Footer
