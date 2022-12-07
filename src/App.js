@@ -131,8 +131,8 @@ export default function App() {
           <>
             <Sidenav
               color={sidenavColor}
-              brand={brand}
-              brandName="EBESA"
+              brand={"images/ebesa2.png"}
+              brandName="EBESA-UoN"
               routes={routesAuth}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
@@ -158,8 +158,8 @@ export default function App() {
           <>
             <Sidenav
               color={sidenavColor}
-              brand={brand}
-              brandName="EBESA"
+              brand={"images/ebesa2.png"}
+              brandName="EBESA-UoN"
               routes={routesNoAuth}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}

@@ -441,6 +441,8 @@ function Profile() {
        textColor="inherit"
        variant="fullWidth"
        aria-label="full width tabs example"
+       style={{zIndex:1,backgroundColor:'#fff'}}
+
      >
        <Tab label="Overview" {...a11yProps(0)} />
        <Tab label="Reviews" {...a11yProps(1)} />

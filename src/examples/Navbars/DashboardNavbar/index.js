@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 // react-router components
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -55,7 +55,8 @@ import SignUp from "./SignUp";
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import CloseIcon from '@mui/icons-material/Close';
-
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+import { updateAuthId } from "../../../redux/dataSlice";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -98,6 +99,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
   const authId = useSelector((state) => state.authId);
+  const history = useNavigate("")
+  const dispatch1 = useDispatch();
   const [aboutModal, setAboutModal] = React.useState(false);
   const [contactModal, setContactModal] = React.useState(false);
    const theme = useTheme();
@@ -145,6 +148,12 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
+  const logout = () => {
+    auth.signOut();
+    history("/")
+    dispatch1(updateAuthId(''))
+    window.location.reload();
+}
 
   // Render the notifications menu
   const renderMenu = () => (
@@ -215,7 +224,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               })}
               fontWeight="medium"
               color={light ? "white" : "dark"}
-              style={{marginRight:8,cursor:'pointer'}}
+              style={{marginRight:8,cursor:'pointer',fontWeight:'bold'}}
               onClick={() => setAboutModal(true)}
               >
               AboutUs
@@ -227,7 +236,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
             })}
             fontWeight="medium"
             color={light ? "white" : "dark"}
-            style={{marginRight:8,cursor:'pointer'}}
+            style={{marginRight:8,cursor:'pointer',fontWeight:'bold'}}
             onClick={() => setContactModal(true)}
             >
             ContactUs
@@ -253,7 +262,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
            
             onClick={handleOpenMenu}
           >
-            <Icon style={{color:'#43a047'}}>notifications</Icon>
+            <Icon fontSize="medium" style={{color:'#43a047'}}>notifications</Icon>
           </IconButton>
           {renderMenu()}
           <SoftTypography
@@ -264,13 +273,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
           fontWeight="medium"
           color={light ? "white" : "dark"}
         >
-        <Link
-        to="/account"
-        >
-        <Avatar 
-        sx={{ width: 30, height: 30 }}
-        alt={currentUser?.firstName} src={currentUser?.profilePhoto} />       
-        </Link>
+        <PowerSettingsNewIcon fontSize="medium" onClick={logout} style={{cursor:'pointer'}}/>
         </SoftTypography>
         </div>
               </>
@@ -284,7 +287,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               })}
               fontWeight="medium"
               color={light ? "white" : "dark"}
-              style={{marginLeft:8,cursor:'pointer'}}
+              style={{marginLeft:8,cursor:'pointer',fontWeight:'bold'}}
               onClick={() => setAboutModal(true)}
 
             >
@@ -297,7 +300,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
             })}
             fontWeight="medium"
             color={light ? "white" : "dark"}
-            style={{marginLeft:8,cursor:'pointer'}}
+            style={{marginLeft:8,cursor:'pointer',fontWeight:'bold'}}
             onClick={() => setContactModal(true)}
           >
             ContactUs
@@ -310,7 +313,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 fontWeight="medium"
                 color={light ? "white" : "dark"}
                 onClick={() => setModalShow(true)}
-                style={{marginLeft:8,cursor:'pointer'}}
+                style={{marginLeft:8,cursor:'pointer',fontWeight:'bold'}}
               >
               <Icon fontSize="medium">login</Icon>
               </SoftTypography>
@@ -347,6 +350,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               indicatorColor="secondary"
               textColor="inherit"
               variant="fullWidth"
+              style={{backgroundColor:'#fff'}}
               aria-label="full width tabs example"
             >
               <Tab label="Sign In" {...a11yProps(0)} />
@@ -402,19 +406,16 @@ function DashboardNavbar({ absolute, light, isMini }) {
       <div className="row align-items-center">
         <div className="col-lg-5 col-md-6 mt-4 pt-2 mt-sm-0 pt-sm-0">
           <div className="position-relative">
-            <img src="images/about.jpg" className="rounded-md img-fluid mx-auto d-block" alt="" />
-            <div className="play-icon">
-              <a href="#!" data-type="youtube" data-id="yba7hPeTSjk" className="play-btn lightbox">
-                <i className="mdi mdi-play text-primary rounded-circle bg-white shadow" />
-              </a>
-            </div>
+            <img src="images/ebesa1.jpg" className="rounded-md img-fluid mx-auto d-block" alt="Ebesa logo" />
           </div>
         </div>{/*end col*/}
         <div className="col-lg-7 col-md-6 mt-4 pt-2 mt-sm-0 pt-sm-0">
           <div className="section-title ms-lg-5">
-            <h6 className="text-primary fw-semibold text-uppercase">Who We Are ?</h6>
-            <h4 className="title mb-4">Our Company Story</h4>
-            <p className="text-muted">Start working with Upstart that can provide everything you need to generate awareness, drive traffic, connect. Dummy text is text that is used in the publishing industry or by web designers to occupy the space which will later be filled with 'real' content. This is required when, for example, the final text is not yet available. Dummy texts have been in use by typesetters since the 16th century.</p>
+            <h4 className="title mb-4">EBESA- UoN</h4>
+            <p className="text-muted">
+            EBESA is a student association under the Environment and Biosystems department formed to cater for our fellow students' needs.
+            <p>We would like to welcome you to the EBESA UoN website by the students for the students which will work as a link between the students body and the professional body.</p> 
+            </p>
           </div>
         </div>{/*end col*/}
       </div>{/*end row*/}
@@ -493,7 +494,7 @@ centered
             </div>
             <div className="flex-1 ms-3">
               <h5 className="mb-2">Email</h5>
-              <a style={{fontWeight:'bold',fontSize:16}} href="mailto:jessy.bandya5@gmail.com" className="text-muted">jessy.bandya5@gmail.com</a>
+              <a style={{fontWeight:'bold',fontSize:16}} href="mailto:ebesaofficial.gmail.com" className="text-muted">ebesaofficial.gmail.com</a>
             </div>
           </div>
           <div className="d-flex mt-4">

@@ -6,7 +6,7 @@ import DashboardNavbar from '../../examples/Navbars/DashboardNavbar'
 import {useSelector,useDispatch} from "react-redux"
 import { useNavigate } from 'react-router-dom'
 import { updateAuthId } from '../../redux/dataSlice'
-import { auth } from '../../firebase'
+import { auth, db } from '../../firebase'
 import { Grid } from '@mui/material'
 import MiniStatisticsCard from '../../examples/Cards/StatisticsCards/MiniStatisticsCard'
 import BuildByDevelopers from '../../layouts/dashboard/components/BuildByDevelopers'
@@ -22,6 +22,10 @@ import Projects from '../../layouts/dashboard/components/Projects'
 import OrdersOverview from '../../layouts/dashboard/components/OrderOverview'
 import  { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
+import Typewriter from 'typewriter-effect';
+import Events from '../../sub-components/Events'
+import Articles from '../../sub-components/Articles'
+
 
 function Admin() {
   const authId = useSelector((state) => state.authId)
@@ -29,8 +33,35 @@ function Admin() {
   const dispatch = useDispatch();
   const { size } = typography;
   const { chart, items } = reportsBarChartData;
+  const [membersData, setMembers] = React.useState(0)
+  const [articlesData, setArticles] = React.useState(0)
+  const [eventsData, setEvents] = React.useState(0)
+  const [albumsData, setAlbums] = React.useState(0)
 
 
+  React.useEffect(() => {
+    db.collection('users').onSnapshot((snapshot) => {
+      setMembers(snapshot.docs.map((doc) => doc.data()))
+    })
+  }, [])
+
+  React.useEffect(() => {
+    db.collection('articles').onSnapshot((snapshot) => {
+      setArticles(snapshot.docs.map((doc) => doc.data()))
+    })
+  }, [])
+
+  React.useEffect(() => {
+    db.collection('events').onSnapshot((snapshot) => {
+      setEvents(snapshot.docs.map((doc) => doc.data()))
+    })
+  }, [])
+
+  React.useEffect(() => {
+    db.collection('albums').onSnapshot((snapshot) => {
+      setAlbums(snapshot.docs.map((doc) => doc.data()))
+    })
+  }, [])
 
   const logout = () => {
     auth.signOut();
@@ -50,12 +81,15 @@ function Admin() {
     <DashboardNavbar />
 
     <Carousel
+    pause={false}
     className='CarouselHome'
     >
-      <Carousel.Item interval={1000} variant="dark">
+      <Carousel.Item interval={500} variant="dark"
+      
+      >
         <img
           className="d-block w-100 imageSlider"
-          src="images/bg/1.jpg"
+          src="https://biosystems.files.wordpress.com/2016/07/processing.jpg"
           alt="First slide"
 style={{
   filter:'brightness(30%)',
@@ -65,10 +99,28 @@ style={{
         <Carousel.Caption>
         <div className="title-heading">
         {/* <h4 class="heading text-white mb-4 position-relative">Providing Brilliant <br> Ideas For Your <br> <span class="position-relative text-type-element" data-period="2000">Business</span></h4> */}
-        <h4 className="heading text-white mb-4 position-relative">Providing Brilliant Ideas <br />For Your <span className="typewrite position-relative text-type-element" data-period={2000} data-type="[ &quot;Business&quot;, &quot;Startups&quot;, &quot;Digital Agency&quot;, &quot;Marketing&quot; ]" /></h4>
-        <p className="text-white-50 mb-0 para-desc">Launch your campaign and benefit from our expertise on designing and managing conversion centered bootstrap v5 html page.</p>
+        <h4 className="heading text-white mb-4 position-relative">Environmental & Biosystems Engineering Student’s Association
+        <span style={{color:'#43a047'}}>
+        <Typewriter
+        options={{
+          strings: ['EBESA TEAM', 'EBESA- UoN'],
+          autoStart: true,
+          loop: true,
+        }}
+      />
+        </span>
+        </h4>
+        <p className="text-white-50 mb-0 para-desc">Environmental & Biosystems Engineering Student’s Association. (University Of Nairobi)</p>
         <div className="mt-4 pt-2">
-          <a href="#" className="btn btn-primary me-2">Get Started</a>
+          <a href="#" className="btn btn-primary me-2">
+          <Typewriter
+          options={{
+            strings: ['EBESA TEAM', 'EBESA- UoN'],
+            autoStart: true,
+            loop: true,
+          }}
+        />
+          </a>
         </div>
       </div>
         </Carousel.Caption>
@@ -76,7 +128,7 @@ style={{
       <Carousel.Item>
         <img
           className="d-block w-100 imageSlider"
-          src="images/bg/1.jpg"
+          src="https://english.iut.ac.ir/sites/default/files/faculties/Biosystems-Engineering/Biosystems%20Engineering.jpg"
           alt="Second slide"
 style={{
   filter:'brightness(30%)',
@@ -87,10 +139,28 @@ style={{
         <Carousel.Caption>
         <div className="title-heading">
         {/* <h4 class="heading text-white mb-4 position-relative">Providing Brilliant <br> Ideas For Your <br> <span class="position-relative text-type-element" data-period="2000">Business</span></h4> */}
-        <h4 className="heading text-white mb-4 position-relative">Providing Brilliant Ideas <br />For Your <span className="typewrite position-relative text-type-element" data-period={2000} data-type="[ &quot;Business&quot;, &quot;Startups&quot;, &quot;Digital Agency&quot;, &quot;Marketing&quot; ]" /></h4>
-        <p className="text-white-50 mb-0 para-desc">Launch your campaign and benefit from our expertise on designing and managing conversion centered bootstrap v5 html page.</p>
+        <h4 className="heading text-white mb-4 position-relative">Environmental & Biosystems Engineering Student’s Association
+        <span style={{color:'#43a047'}}>
+        <Typewriter
+        options={{
+          strings: ['EBESA TEAM', 'EBESA- UoN'],
+          autoStart: true,
+          loop: true,
+        }}
+      />
+        </span>
+        </h4>
+        <p className="text-white-50 mb-0 para-desc">Environmental & Biosystems Engineering Student’s Association. (University Of Nairobi)</p>
         <div className="mt-4 pt-2">
-          <a href="#" className="btn btn-primary me-2">Get Started</a>
+          <a href="#" className="btn btn-primary me-2">
+          <Typewriter
+          options={{
+            strings: ['EBESA TEAM', 'EBESA- UoN'],
+            autoStart: true,
+            loop: true,
+          }}
+        />
+          </a>
         </div>
       </div>
         </Carousel.Caption>
@@ -98,7 +168,7 @@ style={{
       <Carousel.Item>
         <img
           className="d-block w-100 imageSlider"
-          src="images/bg/1.jpg"
+          src="https://www.wur.nl/upload/7344efc6-a0f0-4bf1-a18d-9a294c9630ef_farm_technology.jpg"
           alt="Third slide"
 style={{
   filter:'brightness(30%)',
@@ -109,10 +179,28 @@ style={{
         <Carousel.Caption>
         <div className="title-heading">
         {/* <h4 class="heading text-white mb-4 position-relative">Providing Brilliant <br> Ideas For Your <br> <span class="position-relative text-type-element" data-period="2000">Business</span></h4> */}
-        <h4 className="heading text-white mb-4 position-relative">Providing Brilliant Ideas <br />For Your <span className="typewrite position-relative text-type-element" data-period={2000} data-type="[ &quot;Business&quot;, &quot;Startups&quot;, &quot;Digital Agency&quot;, &quot;Marketing&quot; ]" /></h4>
-        <p className="text-white-50 mb-0 para-desc">Launch your campaign and benefit from our expertise on designing and managing conversion centered bootstrap v5 html page.</p>
+        <h4 className="heading text-white mb-4 position-relative">Environmental & Biosystems Engineering Student’s Association
+        <span style={{color:'#43a047'}}>
+        <Typewriter
+        options={{
+          strings: ['EBESA TEAM', 'EBESA- UoN'],
+          autoStart: true,
+          loop: true,
+        }}
+      />
+        </span>
+        </h4>
+        <p className="text-white-50 mb-0 para-desc">Environmental & Biosystems Engineering Student’s Association. (University Of Nairobi)</p>
         <div className="mt-4 pt-2">
-          <a href="#" className="btn btn-primary me-2">Get Started</a>
+          <a href="#" className="btn btn-primary me-2">
+          <Typewriter
+          options={{
+            strings: ['EBESA TEAM', 'EBESA- UoN'],
+            autoStart: true,
+            loop: true,
+          }}
+        />
+          </a>
         </div>
       </div>
         </Carousel.Caption>
@@ -120,11 +208,12 @@ style={{
     </Carousel>
 
     {/* Project Start */}
+    <hr />
     <section className="section bg-light" id="project">
       <div className="container">
         <div className="row justify-content-center">
           <div className="col">
-            <div className="section-title text-center mb-4 pb-2">
+            <div className="section-title text-center mb-1 pb-0">
               <h6 className="text-primary fw-semibold text-uppercase"></h6>
               <h4 className="title mb-3">Our Mission & Vission</h4>
             </div>
@@ -132,36 +221,27 @@ style={{
         </div>{/*end row*/}
 
         <div className="row">
-        <div className="col-lg-4 col-md-6 col-12 mt-4 pt-2">
-          <div className="card border-0 features feature-primary feature-clean rounded-lg p-4">
-            <div className="icons bg-lg text-center">
-              <i className="uil uil-adjust-circle d-block rounded-md h3 mb-0" />
-            </div>
+        <div className="col-lg-4 col-md-6 col-12 mt-0 pt-0">
+          <div className="card border-0 features feature-primary feature-clean rounded-lg p-4" style={{border:'2px solid red'}}>
             <div className="content mt-4 pt-2">
-              <a href="#" className="title text-dark h5">Grow Your Business</a>
-              <p className="text-muted mt-3">The phrasal sequence of the is now so that many campaign and benefit</p>
+              <a href="#" style={{color:'#43a047', fontWeight:'bold'}}>Networking</a>
+              <p className="text-muted mt-3">Description</p>
             </div>
           </div>
         </div>{/*end col*/}
-        <div className="col-lg-4 col-md-6 col-12 mt-4 pt-2">
-          <div className="card border-0 features feature-primary feature-clean rounded-lg active p-4">
-            <div className="icons bg-lg text-center">
-              <i className="uil uil-circuit d-block rounded-md h3 mb-0" />
-            </div>
+        <div className="col-lg-4 col-md-6 col-12 mt-0 pt-0">
+          <div className="card border-0 features feature-primary feature-clean rounded-lg p-4" style={{border:'2px solid red'}}>
             <div className="content mt-4 pt-2">
-              <a href="#" className="title text-dark h5">Drive More Sales</a>
-              <p className="text-muted mt-3">The phrasal sequence of the is now so that many campaign and benefit</p>
+              <a href="#" style={{color:'#43a047', fontWeight:'bold'}}>Academic Naturing</a>
+              <p className="text-muted mt-3">Description</p>
             </div>
           </div>
         </div>{/*end col*/}
-        <div className="col-lg-4 col-md-6 col-12 mt-4 pt-2">
-          <div className="card border-0 features feature-primary feature-clean rounded-lg p-4">
-            <div className="icons bg-lg text-center">
-              <i className="uil uil-fire d-block rounded-md h3 mb-0" />
-            </div>
+        <div className="col-lg-4 col-md-6 col-12 mt-0 pt-0">
+          <div className="card border-0 features feature-primary feature-clean rounded-lg p-4" style={{border:'2px solid red'}}>
             <div className="content mt-4 pt-2">
-              <a href="#" className="title text-dark h5">Handled By Expert</a>
-              <p className="text-muted mt-3">The phrasal sequence of the is now so that many campaign and benefit</p>
+              <a href="#" style={{color:'#43a047', fontWeight:'bold'}}>Projects stimulation</a>
+              <p className="text-muted mt-3">Description</p>
             </div>
           </div>
         </div>{/*end col*/}
@@ -169,18 +249,27 @@ style={{
 
       </div>{/*end container*/}
     </section>{/*end section*/}
+    <hr />
     {/* Project End */}
     {/* CTA Start */}
-    <section className="section" style={{background: 'url("images/bg/cta.png") center'}}>
+    <section className="section" style={{background: 'url("images/ebesa1.jpg") center'}}>
       <div className="bg-overlay" />
       <div className="container">
         <div className="row justify-content-center">
           <div className="col">
             <div className="section-title text-center">
-              <h4 className="title text-white mb-3">Ready to start your next web project now?</h4>
-              <p className="text-white-50 mx-auto para-desc mb-0">Launch your campaign and benefit from our expertise on designing and managing conversion centered bootstrap v5 html page.</p>
+              <h4 className="title text-white mb-3">what is Ebesa in summury?</h4>
+              <p className="text-white-50 mx-auto para-desc mb-0">EBESA is a student association under the Environment and Biosystems department formed to cater for our fellow students' needs.</p>
               <div className="mt-4 pt-2">
-                <a href="#" className="btn btn-primary">Get Started !</a>
+                <a href="#" className="btn btn-primary">
+                <Typewriter
+                options={{
+                  strings: ['EBESA TEAM', 'EBESA- UoN'],
+                  autoStart: true,
+                  loop: true,
+                }}
+              />
+                </a>
               </div>
             </div>
           </div>{/*end col*/}
@@ -189,29 +278,45 @@ style={{
     </section>{/*end section*/}
     {/* CTA End */}
 
+
+
     <div className="container mt-5">
     <div className="row">
       <div className="col-md-3 col-6">
         <div className="counter-box position-relative text-center">
-          <h3 className="mb-0 fw-semibold mt-2"><span className="counter-value" data-target={40}>3</span>+</h3>
-          <span className="counter-head text-muted">Projects</span>
+          <h3 className="mb-0 fw-semibold mt-2">{
+            articlesData.length > 50 ? <>50+</> : <>{articlesData.length}</>
+          }</h3>
+          <span className="counter-head text-muted">Articles</span>
         </div>{/*end counter box*/}
       </div>{/*end col*/}
       <div className="col-md-3 col-6">
         <div className="counter-box position-relative text-center">
-          <h3 className="mb-0 fw-semibold mt-2"><span className="counter-value" data-target={200}>5</span>+</h3>
+          <h3 className="mb-0 fw-semibold mt-2">
+          <h3 className="mb-0 fw-semibold mt-2">{
+            membersData.length > 50 ? <>50+</> : <>{membersData.length}</>
+          }</h3>
+          </h3>
           <span className="counter-head text-muted">Members</span>
         </div>{/*end counter box*/}
       </div>{/*end col*/}
       <div className="col-md-3 col-6">
         <div className="counter-box position-relative text-center">
-          <h3 className="mb-0 fw-semibold mt-2"><span className="counter-value" data-target={457}>200</span>K</h3>
+          <h3 className="mb-0 fw-semibold mt-2">
+          <h3 className="mb-0 fw-semibold mt-2">{
+            eventsData.length > 50 ? <>50+</> : <>{eventsData.length}</>
+          }</h3>
+          </h3>
           <span className="counter-head text-muted">Events</span>
         </div>{/*end counter box*/}
       </div>{/*end col*/}
       <div className="col-md-3 col-6">
         <div className="counter-box position-relative text-center">
-          <h3 className="mb-0 fw-semibold mt-2"><span className="counter-value" data-target={150}>100</span>+</h3>
+          <h3 className="mb-0 fw-semibold mt-2">
+          <h3 className="mb-0 fw-semibold mt-2">{
+            albumsData.length > 50 ? <>50+</> : <>{albumsData.length}</>
+          }</h3>
+          </h3>
           <span className="counter-head text-muted">Albums</span>
         </div>{/*end counter box*/}
       </div>{/*end col*/}
@@ -223,7 +328,7 @@ style={{
       <div className="container">
         <div className="row justify-content-center">
           <div className="col">
-            <div className="section-title text-center mb-4 pb-2">
+            <div className="section-title text-center mb-1 pb-0">
               <h6 className="text-primary fw-semibold text-uppercase"></h6>
               <h4 className="title mb-3">Our Events</h4>
             </div>
@@ -232,12 +337,15 @@ style={{
         <div className="row">
 
 
-        
+         <Events />
 
         </div>{/*end row*/}
       </div>{/*end container*/}
     </section>{/*end section*/}
     {/* End Team */}
+
+
+      {/* End Team */}
 
 
 

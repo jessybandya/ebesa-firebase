@@ -200,7 +200,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           </SoftTypography>
         </SoftBox>
         <SoftBox component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && <SoftBox component="img" src={brand} alt="Soft UI Logo" width="2rem" />}
+          {brand && <SoftBox component="img" src={brand} alt="EBESA Logo" style={{height:100}}/>}
           <SoftBox
             width={!brandName && "100%"}
             sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
@@ -280,6 +280,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
               textColor="inherit"
               variant="fullWidth"
               aria-label="full width tabs example"
+              style={{zIndex:1,backgroundColor:'#fff'}}
+
             >
               <Tab label="Sign In" {...a11yProps(0)} />
               <Tab label="Sign Up" {...a11yProps(1)} />

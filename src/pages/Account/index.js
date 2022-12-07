@@ -99,8 +99,8 @@ React.useEffect(() => {
     <DashboardNavbar />
     <SoftTypography>
     <Header countArtcles={countArtcles} firstName={currentUser?.firstName} lastName={currentUser?.lastName} profilePhoto={currentUser?.profilePhoto}/>
-    <Box sx={{ bgcolor: 'background.paper'}}>
-    <AppBar position="static" style={{zIndex:1}}>
+    <Box>
+    <AppBar position="static">
       <Tabs
         value={value}
         onChange={handleChange}
@@ -108,7 +108,7 @@ React.useEffect(() => {
         textColor="inherit"
         variant="fullWidth"
         aria-label="full width tabs example"
-        style={{zIndex:1}}
+        style={{zIndex:1,backgroundColor:'#fff'}}
       >
         <Tab label="Profile Info." {...a11yProps(0)} />
         <Tab label="Articles" {...a11yProps(1)} />

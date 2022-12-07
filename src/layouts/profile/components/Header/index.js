@@ -157,6 +157,8 @@ function Header({ countArtcles, firstName, lastName, profilePhoto }) {
                 value={tabValue}
                 onChange={handleSetTabValue}
                 sx={{ background: "transparent" }}
+                style={{zIndex:1,backgroundColor:'#fff'}}
+
               >
                 <Tab label={`Articles ${abbrNum(countArtcles,1)}`} icon={<Document />} />
               </Tabs>

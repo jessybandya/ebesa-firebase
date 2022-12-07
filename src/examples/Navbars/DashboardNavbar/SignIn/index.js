@@ -56,8 +56,8 @@ function SignIn({setModalShow}) {
 }
 
   return (
-    <SoftBox p={3}>
-    <center><img src={brand}  style={{height:40}}/></center>
+    <SoftBox style={{marginTop:-50}} p={3}>
+    <center><img src={"images/ebesa2.png"}  style={{height:100}}/></center>
     <center>Welcome Back!</center>
     <SoftBox component="form" role="form">
     <SoftBox mb={2}>

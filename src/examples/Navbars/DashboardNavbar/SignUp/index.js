@@ -52,7 +52,7 @@ function SignUp({setModalShow}) {
   }
   return (
     <SoftBox p={2}>
-    <center><img src={brand}  style={{height:40}}/></center>
+    <center><img src={"images/ebesa2.png"}  style={{height:100}}/></center>
     <center style={{fontWeight:'bold'}}>Create An Account!</center>
     <SoftBox component="form" role="form">
     <SoftBox mb={2}>
