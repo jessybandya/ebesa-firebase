@@ -26,7 +26,7 @@ import { toast } from "react-toastify"
 
 const theme = createTheme();
 
-function Viewevent({ description, title, venue, date, status, eventId }) {          
+function Viewevent({ description, title, venue, date, status, eventId, posterImage }) {          
 
   return (
     <>
@@ -73,6 +73,16 @@ function Viewevent({ description, title, venue, date, status, eventId }) {
         </TableBody>
       </Table>
     </TableContainer>
+    <hr />
+    <center style={{color:'#43a047',fontWeight:'bold'}}>EVENT's POSTER</center>
+    <hr />
+    {posterImage === "" ?(
+        <center style={{fontWeight:'bold'}}>No Poster </center>
+    ):(
+      <div style={{padding:15}}>
+      <img src={posterImage} style={{width:'100%', objectFit:'contain'}} alt={title} />
+      </div>
+    )}
   </Paper>
 
   </>

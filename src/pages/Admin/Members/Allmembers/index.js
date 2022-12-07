@@ -86,14 +86,14 @@ export default function StickyHeadTable({ filteredPosts, searchTerm }) {
         <Table stickyHeader aria-label="sticky table">
           <TableHead sx={{ display: "table-header-group" }}>
             <TableRow>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #17c1e8",color:"#17c1e8"}}>FIRST NAME</TableCell>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #17c1e8",color:"#17c1e8"}} align="right">LAST NAME</TableCell>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #17c1e8",color:"#17c1e8"}} align="right">EMAIL</TableCell>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #17c1e8",color:"#17c1e8"}} align="right">REG. NO.</TableCell>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #17c1e8",color:"#17c1e8"}} align="right">PHONE NO.</TableCell>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #17c1e8",color:"#17c1e8"}} align="right">YEAR OF STUDY</TableCell>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #17c1e8",color:"#17c1e8"}} align="right">DATE REGISTERED</TableCell>
-            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #17c1e8",color:"#17c1e8"}} align="right">ACTION</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}}>FIRST NAME</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}} align="right">LAST NAME</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}} align="right">EMAIL</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}} align="right">REG. NO.</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}} align="right">PHONE NO.</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}} align="right">YEAR OF STUDY</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}} align="right">DATE REGISTERED</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "",fontWeight:"900",borderBottom: "2px solid #43a047",color:"#43a047"}} align="right">ACTION</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

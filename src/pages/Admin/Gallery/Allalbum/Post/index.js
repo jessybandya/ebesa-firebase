@@ -40,19 +40,19 @@ function Post({ albumId, images, name, ownerId, timestamp}) {
     </TableCell>
     <TableCell align='right'> 
     <Link to={`/profile/true/${ownerId}`}>
-    <RemoveRedEyeIcon style={{color:'#17c1e8',cursor:'pointer'}} fontSize='medium'/>              
+    <RemoveRedEyeIcon style={{color:'#43a047',cursor:'pointer'}} fontSize='medium'/>              
     </Link> 
     </TableCell>
     <TableCell align='right'>
     <Link to={`/album/${albumId}/${ownerId}`}>
-    <RemoveRedEyeIcon style={{color:'#17c1e8',cursor:'pointer'}} fontSize='medium'/>              
+    <RemoveRedEyeIcon style={{color:'#43a047',cursor:'pointer'}} fontSize='medium'/>              
     </Link>           
     </TableCell>
     <TableCell align='right'>
     {date.toDateString()}                 
     </TableCell>
     <TableCell align='right'>
-     <DeleteForeverIcon onClick={deleteAlbum} style={{color:'#17c1e8',cursor:'pointer'}} fontSize='medium'/>                  
+     <DeleteForeverIcon onClick={deleteAlbum} style={{color:'#43a047',cursor:'pointer'}} fontSize='medium'/>                  
     </TableCell>
 </TableRow>
   )

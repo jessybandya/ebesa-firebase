@@ -17,19 +17,25 @@ function Comments({ eventId }) {
 
   return (
     <div>
-     {
-                                     posts.map(({id, post}) => (
-                                      <Post
-                                      key={id} 
-                                      ratedByUid={post?.ratedByUid}
-                                      rating1={post?.rating}
-                                      ratingComment={post?.ratingComment}
-                                      ratingTime={post?.ratingTime}
-                                      reviewId = {id}
-                                      eventId={eventId}
-                                      />
-                                     ) )
-     }
+    {posts.length === 0 ?(
+      <center style={{fontWeight:'bold'}}>No Reviews yet!</center>
+    ):(
+      <>
+      {
+        posts.map(({id, post}) => (
+         <Post
+         key={id} 
+         ratedByUid={post?.ratedByUid}
+         rating1={post?.rating}
+         ratingComment={post?.ratingComment}
+         ratingTime={post?.ratingTime}
+         reviewId = {id}
+         eventId={eventId}
+         />
+        ) )
+}
+      </>
+    )}
     </div>
   )
 }

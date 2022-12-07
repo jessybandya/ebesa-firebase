@@ -6,7 +6,7 @@ import DashboardNavbar from '../../examples/Navbars/DashboardNavbar'
 import {useSelector,useDispatch} from "react-redux"
 import { useNavigate } from 'react-router-dom'
 import { updateAuthId } from '../../redux/dataSlice'
-import { auth } from '../../firebase'
+import { auth,db } from '../../firebase'
 import { Grid } from '@mui/material'
 import MiniStatisticsCard from '../../examples/Cards/StatisticsCards/MiniStatisticsCard'
 import BuildByDevelopers from '../../layouts/dashboard/components/BuildByDevelopers'
@@ -74,6 +74,35 @@ function Admin() {
   const dispatch = useDispatch();
   const { size } = typography;
   const { chart, items } = reportsBarChartData;
+  const [membersData, setMembers] = React.useState(0)
+  const [articlesData, setArticles] = React.useState(0)
+  const [eventsData, setEvents] = React.useState(0)
+  const [albumsData, setAlbums] = React.useState(0)
+
+
+  React.useEffect(() => {
+    db.collection('users').onSnapshot((snapshot) => {
+      setMembers(snapshot.docs.map((doc) => doc.data()))
+    })
+  }, [])
+
+  React.useEffect(() => {
+    db.collection('articles').onSnapshot((snapshot) => {
+      setArticles(snapshot.docs.map((doc) => doc.data()))
+    })
+  }, [])
+
+  React.useEffect(() => {
+    db.collection('events').onSnapshot((snapshot) => {
+      setEvents(snapshot.docs.map((doc) => doc.data()))
+    })
+  }, [])
+
+  React.useEffect(() => {
+    db.collection('albums').onSnapshot((snapshot) => {
+      setAlbums(snapshot.docs.map((doc) => doc.data()))
+    })
+  }, [])
 
   if(authId !== process.env.REACT_APP_ADMIN_AUTHID && !authId){
      history("/")
@@ -119,7 +148,7 @@ let status = (hours < 12)? "Good Morning" : (hours >= 12 && hours < 16)? "Good A
         <Grid item xs={12} sm={6} xl={3}>
           <MiniStatisticsCard
             title={{ text: "Members" }}
-            count="54"
+            count={membersData.length}
             percentage={{ color: "success", text: "+55%" }}
             icon={{ color: "info", component: "group" }}
           />
@@ -127,7 +156,7 @@ let status = (hours < 12)? "Good Morning" : (hours >= 12 && hours < 16)? "Good A
         <Grid item xs={12} sm={6} xl={3}>
           <MiniStatisticsCard
             title={{ text: "Articles" }}
-            count="36"
+            count={articlesData.length}
             percentage={{ color: "success", text: "+3%" }}
             icon={{ color: "info", component: "auto_stories" }}
           />
@@ -135,15 +164,15 @@ let status = (hours < 12)? "Good Morning" : (hours >= 12 && hours < 16)? "Good A
         <Grid item xs={12} sm={6} xl={3}>
           <MiniStatisticsCard
             title={{ text: "Events" }}
-            count="4"
+            count={eventsData.length}
             percentage={{ color: "error", text: "-2%" }}
             icon={{ color: "info", component: "event" }}
           />
         </Grid>
         <Grid item xs={12} sm={6} xl={3}>
           <MiniStatisticsCard
-            title={{ text: "Gallery" }}
-            count="15"
+            title={{ text: "Albums" }}
+            count={albumsData.length}
             percentage={{ color: "success", text: "+5%" }}
             icon={{
               color: "info",
@@ -151,17 +180,6 @@ let status = (hours < 12)? "Good Morning" : (hours >= 12 && hours < 16)? "Good A
             }}
           />
         </Grid>
-        <Grid item xs={12} sm={6} xl={3}>
-        <MiniStatisticsCard
-          title={{ text: "Reports" }}
-          count="12"
-          percentage={{ color: "success", text: "+5%" }}
-          icon={{
-            color: "info",
-            component: "flag",
-          }}
-        />
-      </Grid>
       </Grid>
     </SoftBox>
 
@@ -176,13 +194,13 @@ let status = (hours < 12)? "Good Morning" : (hours >= 12 && hours < 16)? "Good A
           textColor="inherit"
           variant="fullWidth"
           aria-label="full width tabs example"
+          style={{zIndex:1,backgroundColor:'#fff'}}
+
         >
-          <Tab label="Overview" {...a11yProps(0)} />
-          <Tab label="Members" {...a11yProps(1)} />
-          <Tab label="Articles" {...a11yProps(2)} />
-          <Tab label="Events" {...a11yProps(3)} />
-          <Tab label="Gallery" {...a11yProps(4)} />
-          <Tab label="Reports" {...a11yProps(5)} />
+          <Tab label="Members" {...a11yProps(0)} />
+          <Tab label="Articles" {...a11yProps(1)} />
+          <Tab label="Events" {...a11yProps(2)} />
+          <Tab label="Gallery" {...a11yProps(3)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -195,58 +213,17 @@ let status = (hours < 12)? "Good Morning" : (hours >= 12 && hours < 16)? "Good A
          }}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-        <SoftBox mb={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} lg={5}>
-            <ReportsBarChart
-              title="active users"
-              description={
-                <>
-                  (<strong>+23%</strong>) than last week
-                </>
-              }
-              chart={chart}
-              items={items}
-            />
-          </Grid>
-          <Grid item xs={12} lg={7}>
-            <GradientLineChart
-              title="Sales Overview"
-              description={
-                <SoftBox display="flex" alignItems="center">
-                  <SoftBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
-                    <Icon className="font-bold">arrow_upward</Icon>
-                  </SoftBox>
-                  <SoftTypography variant="button" color="text" fontWeight="medium">
-                    4% more{" "}
-                    <SoftTypography variant="button" color="text" fontWeight="regular">
-                      in 2021
-                    </SoftTypography>
-                  </SoftTypography>
-                </SoftBox>
-              }
-              height="20.25rem"
-              chart={gradientLineChartData}
-            />
-          </Grid>
-        </Grid>
-      </SoftBox>
-        </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
           <Members />
         </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
+        <TabPanel value={value} index={1} dir={theme.direction}>
           <Articles />
         </TabPanel>
-        <TabPanel value={value} index={3} dir={theme.direction}>
+        <TabPanel value={value} index={2} dir={theme.direction}>
         <Events />
       </TabPanel>
-      <TabPanel value={value} index={4} dir={theme.direction}>
+      <TabPanel value={value} index={3} dir={theme.direction}>
       <Gallery />
     </TabPanel>
-    <TabPanel value={value} index={5} dir={theme.direction}>
-    <Reports />
-  </TabPanel>
       </SwipeableViews>
     </Box>
   </SoftBox>

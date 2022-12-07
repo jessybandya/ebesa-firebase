@@ -12,7 +12,8 @@ import DashboardLayout from '../../../examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from '../../../examples/Navbars/DashboardNavbar';
 import SoftTypography from '../../../components/SoftTypography';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-
+import jsPDF from "jspdf";
+import autoTable from 'jspdf-autotable';
 
 function Articles() {
   const [modalShow, setModalShow] = React.useState(false);
@@ -41,6 +42,33 @@ function Articles() {
     // document.getElementsByClassName('dropdown-content3')[0].style.display = 'auto';
   }
 
+
+  const downloadPdf = () => {
+    const doc = new jsPDF();
+    doc.text(`Ebesa Members`, 20, 10);
+    const columns = [
+      "First Name",
+      "Last Name",
+      "Phone",
+      "Email",
+      "Reg. No.",
+      "Y.O.S",
+    ];
+    const rows = [];
+    posts1.map((item) =>
+      rows.push([
+        item.firstName,
+        item.lastName,
+        item.phone,
+        item.email,
+        item.regNo,
+        item.yos,
+      ])
+    );
+    doc.autoTable(columns, rows);
+    doc.save(`Ebesa Members`);
+  }
+
   return (
     <SoftTypography>
     <div>
@@ -49,7 +77,7 @@ function Articles() {
     sx={{ display: 'flex', alignItems: 'center'}}
   >
   <IconButton type="button" sx={{ p: '10px' }} aria-label="pdf">
-  <PictureAsPdfIcon />
+  <PictureAsPdfIcon onClick={downloadPdf} style={{color:'#43a047'}}/>
 </IconButton>
     <InputBase
       sx={{ ml: 1, flex: 1 }}
@@ -63,7 +91,6 @@ function Articles() {
     <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
     {auth?.currentUser?.uid &&(
       <IconButton color="primary" sx={{ p: '10px' }} aria-label="directions">
-      <DriveFolderUploadIcon onClick={() => setModalShow(true)}/>
     </IconButton>   
     )}   
   </Paper>  

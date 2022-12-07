@@ -288,7 +288,7 @@ const deleteArticle = () =>{
         {auth?.currentUser?.uid ?(
             <>
             {see?.liked === true ?(
-              <ThumbUpIcon style={{color:'#5C5CFF'}} onClick={likePost}/> 
+              <ThumbUpIcon style={{color:'#43a047'}} onClick={likePost}/> 
              ):(
               <ThumbUpOutlinedIcon onClick={likePost}/> 
              )}   

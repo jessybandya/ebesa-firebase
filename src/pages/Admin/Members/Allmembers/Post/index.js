@@ -39,7 +39,7 @@ function Post({ userId, firstName, lastName, email, phone, profilePhoto, timesta
         {date.toDateString()}                 
         </TableCell>
         <TableCell align='right'>
-         <DeleteForeverIcon style={{color:'#17c1e8'}} fontSize='medium'/>                  
+         <DeleteForeverIcon style={{color:'#43a047'}} fontSize='medium'/>                  
         </TableCell>
   </TableRow>
   )

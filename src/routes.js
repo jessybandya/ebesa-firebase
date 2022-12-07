@@ -71,18 +71,18 @@ const routes = [
     component: <Events />,
     noCollapse: true,
   },
-  {
-    type: "collapse",
-    name: "Messages",
-    key: "messages",
-    route: "/messages",
-    icon: 
-    <Badge badgeContent={4} color="primary">
-    <Icon>mails</Icon>
-  </Badge>,
-    component: <Messages />,
-    noCollapse: true,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Messages",
+  //   key: "messages",
+  //   route: "/messages",
+  //   icon: 
+  //   <Badge badgeContent={4} color="primary">
+  //   <Icon>mails</Icon>
+  // </Badge>,
+  //   component: <Messages />,
+  //   noCollapse: true,
+  // },
   {
     type: "collapse",
     name: "Account",

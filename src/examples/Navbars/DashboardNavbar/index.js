@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 // react-router components
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -54,7 +54,9 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
-
+import CloseIcon from '@mui/icons-material/Close';
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+import { updateAuthId } from "../../../redux/dataSlice";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -97,7 +99,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
   const authId = useSelector((state) => state.authId);
-
+  const history = useNavigate("")
+  const dispatch1 = useDispatch();
+  const [aboutModal, setAboutModal] = React.useState(false);
+  const [contactModal, setContactModal] = React.useState(false);
    const theme = useTheme();
     const [value, setValue] = React.useState(0);
   
@@ -143,6 +148,12 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
+  const logout = () => {
+    auth.signOut();
+    history("/")
+    dispatch1(updateAuthId(''))
+    window.location.reload();
+}
 
   // Render the notifications menu
   const renderMenu = () => (
@@ -213,7 +224,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
               })}
               fontWeight="medium"
               color={light ? "white" : "dark"}
-              style={{marginRight:8,cursor:'pointer'}}
+              style={{marginRight:8,cursor:'pointer',fontWeight:'bold'}}
+              onClick={() => setAboutModal(true)}
               >
               AboutUs
             </SoftTypography>
@@ -224,8 +236,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
             })}
             fontWeight="medium"
             color={light ? "white" : "dark"}
-            style={{marginRight:8,cursor:'pointer'}}
-          >
+            style={{marginRight:8,cursor:'pointer',fontWeight:'bold'}}
+            onClick={() => setContactModal(true)}
+            >
             ContactUs
           </SoftTypography>
           <IconButton
@@ -234,7 +247,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
             sx={navbarMobileMenu}
             onClick={handleMiniSidenav}
           >
-            <Icon fontSize="medium" className={light ? "text-white" : "text-dark"}>
+            <Icon fontSize="medium" style={{color:'#43a047'}}>
               {miniSidenav ? "menu_open" : "menu"}
             </Icon>
           </IconButton>
@@ -246,9 +259,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
             aria-controls="notification-menu"
             aria-haspopup="true"
             variant="contained"
+           
             onClick={handleOpenMenu}
           >
-            <Icon className={light ? "text-white" : "text-dark"}>notifications</Icon>
+            <Icon fontSize="medium" style={{color:'#43a047'}}>notifications</Icon>
           </IconButton>
           {renderMenu()}
           <SoftTypography
@@ -259,13 +273,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
           fontWeight="medium"
           color={light ? "white" : "dark"}
         >
-        <Link
-        to="/account"
-        >
-        <Avatar 
-        sx={{ width: 30, height: 30 }}
-        alt={currentUser?.firstName} src={currentUser?.profilePhoto} />       
-        </Link>
+        <PowerSettingsNewIcon fontSize="medium" onClick={logout} style={{cursor:'pointer'}}/>
         </SoftTypography>
         </div>
               </>
@@ -279,7 +287,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
               })}
               fontWeight="medium"
               color={light ? "white" : "dark"}
-              style={{marginLeft:8,cursor:'pointer'}}
+              style={{marginLeft:8,cursor:'pointer',fontWeight:'bold'}}
+              onClick={() => setAboutModal(true)}
+
             >
               AboutUs
             </SoftTypography>
@@ -290,7 +300,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
             })}
             fontWeight="medium"
             color={light ? "white" : "dark"}
-            style={{marginLeft:8,cursor:'pointer'}}
+            style={{marginLeft:8,cursor:'pointer',fontWeight:'bold'}}
+            onClick={() => setContactModal(true)}
           >
             ContactUs
           </SoftTypography>
@@ -302,7 +313,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 fontWeight="medium"
                 color={light ? "white" : "dark"}
                 onClick={() => setModalShow(true)}
-                style={{marginLeft:8,cursor:'pointer'}}
+                style={{marginLeft:8,cursor:'pointer',fontWeight:'bold'}}
               >
               <Icon fontSize="medium">login</Icon>
               </SoftTypography>
@@ -312,7 +323,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
             sx={navbarMobileMenu}
             onClick={handleMiniSidenav}
           >
-            <Icon className={light ? "text-white" : "text-dark"}>
+            <Icon style={{color:'#43a047'}}>
               {miniSidenav ? "menu_open" : "menu"}
             </Icon>
           </IconButton>
@@ -339,6 +350,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               indicatorColor="secondary"
               textColor="inherit"
               variant="fullWidth"
+              style={{backgroundColor:'#fff'}}
               aria-label="full width tabs example"
             >
               <Tab label="Sign In" {...a11yProps(0)} />
@@ -370,6 +382,137 @@ function DashboardNavbar({ absolute, light, isMini }) {
       <Button onClick={() => setModalShow(false)}>Close</Button>
     </Modal.Footer>
   </Modal>
+
+
+
+
+
+
+  <Modal
+  show={aboutModal}
+  onHide={() => setAboutModal(false)}
+  size="lg"
+  aria-labelledby="contained-modal-title-vcenter"
+  centered
+>
+  <Modal.Header style={{display:'flex',justifyContent:'space-between'}}>
+          <div style={{fontWeight:'bold',color:'#43a047'}}>About Us</div>
+          <div><CloseIcon fontSize="large" onClick={()=> setAboutModal(false)} style={{color:'#88888888',cursor:'pointer'}}/></div>
+  </Modal.Header>
+  <Modal.Body>
+  {/* Start About */}
+  <section className="section" id="about">
+    <div className="container">
+      <div className="row align-items-center">
+        <div className="col-lg-5 col-md-6 mt-4 pt-2 mt-sm-0 pt-sm-0">
+          <div className="position-relative">
+            <img src="images/ebesa1.jpg" className="rounded-md img-fluid mx-auto d-block" alt="Ebesa logo" />
+          </div>
+        </div>{/*end col*/}
+        <div className="col-lg-7 col-md-6 mt-4 pt-2 mt-sm-0 pt-sm-0">
+          <div className="section-title ms-lg-5">
+            <h4 className="title mb-4">EBESA- UoN</h4>
+            <p className="text-muted">
+            EBESA is a student association under the Environment and Biosystems department formed to cater for our fellow students' needs.
+            <p>We would like to welcome you to the EBESA UoN website by the students for the students which will work as a link between the students body and the professional body.</p> 
+            </p>
+          </div>
+        </div>{/*end col*/}
+      </div>{/*end row*/}
+    </div>
+  </section>
+  {/* End About */}
+  </Modal.Body>
+</Modal>
+
+
+<Modal
+show={contactModal}
+onHide={() => setContactModal(false)}
+size="lg"
+aria-labelledby="contained-modal-title-vcenter"
+centered
+>
+<Modal.Header style={{display:'flex',justifyContent:'space-between'}}>
+<div style={{fontWeight:'bold',color:'#43a047'}}>Contact Us</div>
+<div><CloseIcon fontSize="large" onClick={()=> setContactModal(false)} style={{color:'#88888888',cursor:'pointer'}}/></div>
+</Modal.Header>
+<Modal.Body>
+{/* Start Contact */}
+<section className="section bg-light" id="contact">
+  <div className="container">
+    <div className="row align-items-center">
+      <div className="col-lg-8 col-md-6 mt-4 pt-2">
+        <div className="p-4 rounded shadow bg-white">
+          <form method="post" id="myForm" name="myForm" onsubmit="return validateForm()">
+            <p className="mb-0" id="error-msg" />
+            <div id="simple-msg" />
+            <div className="row">
+              <div className="col-md-6">
+                <div className="mb-4">
+                  <input name="name" id="name" type="text" className="form-control" placeholder="Name :" />
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="mb-4">
+                  <input name="email" id="email" type="email" className="form-control" placeholder="Email :" />
+                </div> 
+              </div>{/*end col*/}
+              <div className="col-12">
+                <div className="mb-4">
+                  <input name="subject" id="subject" className="form-control" placeholder="Subject :" />
+                </div>
+              </div>{/*end col*/}
+              <div className="col-12">
+                <div className="mb-4">
+                  <textarea name="comments" id="comments" rows={4} className="form-control" placeholder="Message :" defaultValue={""} />
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-12">
+                <button type="submit" id="submit" name="send" className="btn btn-primary">Send Message</button>
+              </div>{/*end col*/}
+            </div>{/*end row*/}
+          </form>
+        </div>
+      </div>{/*end col*/}
+      <div className="col-lg-4 col-md-6 col-12 mt-4 pt-2">
+        <div className="ms-lg-4">
+          <div className="d-flex">
+            <div className="icons text-center mx-auto">
+              <i className="uil uil-phone d-block rounded h4 mb-0" />
+            </div>
+            <div className="flex-1 ms-3">
+              <h5 className="mb-2">Phone</h5>
+              <a style={{fontWeight:'bold',fontSize:16}} href="tel:+254746749307" className="text-muted">+254 746 749 307</a>
+            </div>
+          </div>
+          <div className="d-flex mt-4">
+            <div className="icons text-center mx-auto">
+              <i className="uil uil-envelope d-block rounded h4 mb-0" />
+            </div>
+            <div className="flex-1 ms-3">
+              <h5 className="mb-2">Email</h5>
+              <a style={{fontWeight:'bold',fontSize:16}} href="mailto:ebesaofficial.gmail.com" className="text-muted">ebesaofficial.gmail.com</a>
+            </div>
+          </div>
+          <div className="d-flex mt-4">
+            <div className="icons text-center mx-auto">
+              <i className="uil uil-map-marker d-block rounded h4 mb-0" />
+            </div>
+            <div className="flex-1 ms-3">
+              <h5 className="mb-2">Location</h5>
+              <p style={{fontWeight:'bold',fontSize:16}} className="text-muted mb-2">university way, University Of Nairobi, Nairobi, Kenya</p>
+            </div>
+          </div>
+        </div>
+      </div>{/*end col*/}
+    </div>{/*end row*/}
+  </div>{/*end container*/}
+</section>{/*end section*/}
+</Modal.Body>
+</Modal>
     </>
   );
 }

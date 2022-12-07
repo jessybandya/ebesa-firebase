@@ -63,6 +63,7 @@ export default function StickyHeadTable({ filteredPosts, searchTerm }) {
           <TableHead sx={{ display: "table-header-group" }}>
             <TableRow>
             <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "#43a047",fontWeight:"900",borderBottom: "2px solid #fff",color:"#fff"}}>NAME</TableCell>
+            <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "#43a047",fontWeight:"900",borderBottom: "2px solid #fff",color:"#fff"}} align="right">DESC.</TableCell>
             <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "#43a047",fontWeight:"900",borderBottom: "2px solid #fff",color:"#fff"}} align="right">VENUE</TableCell>
             <TableCell style={{minWidth:170,fontSize:13,backgroundColor: "#43a047",fontWeight:"900",borderBottom: "2px solid #fff",color:"#fff"}} align="right">DATE & TIME</TableCell>
             <TableCell style={{minWidth:100,fontSize:13,backgroundColor: "#43a047",fontWeight:"900",borderBottom: "2px solid #fff",color:"#fff"}} align="right">RATES</TableCell>
